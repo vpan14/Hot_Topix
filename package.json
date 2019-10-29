@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "NODE_ENV=development && node ./bin/www",
+    "start_prod": "NODE_ENV=production && rm -rf build/ && cd client && npm run build && mv build/ ../"
   },
   "dependencies": {
     "bcrypt": "^3.0.6",
@@ -23,5 +24,11 @@
     "morgan": "~1.9.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0"
+    "morgan": "~1.9.1",
+    "react": "^16.11.0",
+    "react-activity-feed": "^0.9.23",
+    "react-dom": "^16.11.0",
+    "uglify-js": "^3.6.4",
+    "url-parse": "^1.4.7"
   }
 }
