@@ -22,12 +22,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
-app.use(express.static(path.join(__dirname, 'build')));
+if (app.get('env') === 'development') {
+  app.use(express.static(path.join(__dirname, 'client')));
+} else {
+  app.use(express.static(path.join(__dirname, 'build')));
+}
 
 
 app.get('/home', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  if (app.get('env') === 'development') {
+    res.sendFile(path.join(__dirname, 'client', 'public/index.html'));
+  } else {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  }
 });
 
 
