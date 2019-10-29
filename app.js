@@ -9,6 +9,9 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 
+var bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({ extended: true }));
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -35,6 +38,10 @@ app.get('/home', (req, res) => {
   } else {
     res.sendFile(path.join(__dirname, 'build', 'index.html'));
   }
+});
+
+app.use("*",function(req,res){
+  res.sendFile(path + "404.html");
 });
 
 
