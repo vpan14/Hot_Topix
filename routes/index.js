@@ -42,7 +42,7 @@ router.get('/edit_profile', ensureAuthenticated, (req,res) => {
 //login action
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
-    successRedirect: '/',
+    successRedirect: '/home',
     failureRedirect: '/login',
     failureFlash: true
   })(req, res, next);
