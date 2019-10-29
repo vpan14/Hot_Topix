@@ -1,73 +1,109 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path')
-var viewsPath = path.join(__dirname, '../views/');
+const bcrypt = require('bcryptjs');
+const passport = require('passport');
+const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
 
-var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb+srv://vpan14:29Xrw6Sxo4v3Il4c@hottopix-acpd3.mongodb.net/test";
+//load user model
+const User = require('../models/User.js');
 
-
-
-
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.sendFile(viewsPath + "login.html");
+//welcome page
+router.get('/', (req, res) => {
+  res.render('index')
 });
 
-router.get("/about",function(req,res){
-  res.sendFile(viewsPath + "about.html");
+//about page
+router.get('/about', (req,res) => {
+  res.render('about');
 });
 
-router.get("/contact",function(req,res){
-  res.sendFile(viewsPath + "contact.html");
+//contact page
+router.get('/contact', (req,res) => {
+  res.render('contact');
 });
 
-router.get("/login",function(req,res){
-  res.sendFile(viewsPath + "login.html");
+//login page
+router.get('/login', forwardAuthenticated, (req, res) => {
+  res.render('login')
 });
 
-router.post("/login", (req, res) => {
+//signup page
+router.get('/signup', forwardAuthenticated, (req, res) => {
+  res.render('signup')
+});
+
+//edit profile page
+router.get('/edit_profile', ensureAuthenticated, (req,res) => {
+  res.render('edit_profile');
+});
+
+//login action
+router.post('/login', (req, res, next) => {
+  passport.authenticate('local', {
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true
+  })(req, res, next);
+});
+
+//signup action
+router.post('/signup', (req, res) => {
+  const username = req.body.username;
+  const email = req.body.email;
+  const password = req.body.password;
+  const lastname = req.body.lastname;
+  let errors = [];
+
   console.log(req.body);
-  console.log("login");
 
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    console.log("Database connected");
+  if(!username || !email || !password) {
+    errors.push({ message: 'Enter Required Fields' });
+  }
 
-    var dbo = db.db("Users");
-  });
-
-  res.sendFile(viewsPath + "index.html");
-});
-
-router.get("/signup",function(req,res){
-  res.sendFile(viewsPath + "signup.html");
-});
-
-router.post("/signup", (req, res) => {
-  console.log(req.body);
-  console.log("signup");
-
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    console.log("Database connected");
-
-    var dbo = db.db("Users");
-    var myobj = { username: req.body.username, email: req.body.email, password: req.body.password};
-    dbo.collection("Users").insertOne(myobj, function(err, res) {
-      if (err) throw err;
-      console.log("1 document inserted");
-      db.close();
+  if(errors.length > 0) {
+    res.render('signup', {
+      errors,
+      username,
+      email,
+      password,
+      lastname
     });
-  });
+  } else {
+    User.findOne({ email: email }).then(user => {
+      if(user) {
+        errors.push({ msg: 'Email already exists' });
+        res.render('signup', {
+          errors,
+          username,
+          email,
+          password,
+          lastname
+        })
+      } else {
+        const newUser = new User({
+          username,
+          email,
+          password,
+          lastname
+        });
 
-  res.sendFile(viewsPath + "login.html");
-});
-
-router.get("/edit_profile",function(req,res){
-  res.sendFile(viewsPath + "edit_profile.html");
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUser.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUser.password = hash;
+            newUser.save().then(user => {
+              req.flash('success_msg', 'You are now registered and can log in');
+              console.log("User added to database");
+              res.redirect('/login');
+            })
+            .catch(err => console.log(err));
+          });
+        });
+      }
+    });
+  }
 });
 
 router.post('/edit_profile', (req, res) => {
