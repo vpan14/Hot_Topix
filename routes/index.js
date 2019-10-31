@@ -232,29 +232,4 @@ router.post('/edit_profile', (req, res) => {
 
 }); //Method end
 
-/*
-router.post('/edit_profile', (req, res) => {
-  console.log(req.body);
-
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    console.log("Database connected");
-
-    var dbo = db.db("Users");
-    var dbposts = db.db("Posts");
-    var myquery = { username: req.body.username };
-  //  var mypostobj = {$set: { actor: , verb: , object: , time: , to: , foreign_id: , topics: }};
-    var myobj = {$set: { password: req.body.password, email: req.body.email} };
-    dbo.collection("Users").updateOne(myquery, myobj, function(err, res) {
-      if (err) throw err;
-      console.log("1 document updated");
-      db.close();
-    });
-  });
-
-  res.sendFile(viewsPath + "edit_profile.html");
-});
-
-*/
-
 module.exports = router;
