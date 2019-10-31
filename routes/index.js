@@ -107,6 +107,44 @@ router.post('/signup', (req, res) => {
 });
 
 router.post('/edit_profile', (req, res) => {
+  console.log("Editing a profile body:");
+  console.log(req.body);
+
+  const email = req.body.email;
+  const username = req.body.username;
+  const password = req.body.password;
+  const lastname = req.body.lastname;
+  const firstname = req.body.firstname;
+  const bio = req.body.string;
+
+  let errors = [];
+
+  if(!username) {
+    errors.push({message: 'Enter your email.'});
+  }
+  if(errors.length > 0) {
+    res.render('edit_profile', {
+      errors,
+      username,
+      email,
+      password,
+      firstname,
+      lastname,
+      bio
+    });
+  } else {
+    User.findOne({ email: email }).then(oldUser => {
+      console.log("Old user:");
+      console.log(oldUser);
+
+    });
+
+    }
+  
+});
+
+/*
+router.post('/edit_profile', (req, res) => {
   console.log(req.body);
 
   MongoClient.connect(url, function(err, db) {
@@ -128,6 +166,6 @@ router.post('/edit_profile', (req, res) => {
   res.sendFile(viewsPath + "edit_profile.html");
 });
 
-
+*/
 
 module.exports = router;
