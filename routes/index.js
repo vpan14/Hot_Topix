@@ -107,23 +107,27 @@ router.post('/signup', (req, res) => {
 });
 
 router.post('/edit_profile', (req, res) => {
-  console.log("Editing a profile body:");
-  console.log(req.body);
 
+  console.log(req.pass);
   const email = req.body.email;
   const username = req.body.username;
   const password = req.body.password;
+  const confirmPassword = req.body.confirmpass;
   const lastname = req.body.lastname;
   const firstname = req.body.firstname;
-  const bio = req.body.string;
+  const bio = req.body.bio;
 
   let errors = [];
 
-  var oldUser;
+  //var oldUser;
 
-  if(!username) {
+  if(!email) {
     errors.push({message: 'Enter your email.'});
   }
+  if(password != confirmPassword) {
+    errors.push({message: 'Your passwords do not match.'});
+  }
+
   if(errors.length > 0) {
     res.render('edit_profile', {
       errors,
@@ -135,71 +139,98 @@ router.post('/edit_profile', (req, res) => {
       bio
     });
   } else {
-    User.findOne({ email: email }).then(oldUser => {
-      if(!oldUser) {
-        errors.push({msg: 'Please enter your email.'});
-        res.render('edit_profile', {
-          errors,
-          username,
+    User.findOne({ email : email }, function (err, oldUser) {
+      if(err)
+      {
+        console.log(err);
+      }
+      else {
+        console.log("Old user inside else loop:");
+        console.log(oldUser);
+
+        var newUser = new User({
           email,
+          username,
           password,
-          firstname,
           lastname,
+          firstname,
           bio
         });
-      }
-    });
+        let encrypt_password = true;
+
+        if (email == '' || email == null) {
+          newUser.email = oldUser.email;
+        }
+        if (password == '' || password == null) {
+          console.log("Oh good god");
+          newUser.password = oldUser.password;
+          encrypt_password = false;
+        }
+        if (lastname == '' || lastname == null) {
+          newUser.lastname = oldUser.lastname;
+        }
+        if (firstname == '' || firstname == null) {
+          newUser.firstname = oldUser.firstName;
+        }
+
+        if (bio == '' || bio == null) {
+          newUser.bio = oldUser.bio;
+        }
+
+        if(encrypt_password == true) {
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) throw err;
+              newUser.password = hash;
+              console.log(newUser);
+
+              newUser._id = oldUser._id;
+
+              User.updateOne({ email: oldUser.email }, newUser, function(err, numEntries, result) {
+                if(err)
+                {
+                  console.log(err);
+                }
+                else {
+                  req.flash('success_msg', 'Profile has been updated');
+                  console.log("User has updated successfully");
+                  res.redirect('/home');
+                }
+                
+              });
+            });
+          });
+        }
+
+        else {
+        console.log("New user:");
+        console.log(newUser);
+
+        newUser._id = oldUser._id;
+
+        User.updateOne({ email: oldUser.email }, newUser, function(err, numEntries, result) {
+          if(err)
+          {
+            console.log(err);
+          }
+          else {
+            req.flash('success_msg', 'Profile has been updated');
+            console.log("User has updated successfully");
+            res.redirect('/home');
+          }
+          
+        });
+        }
+
+        
+
+      } //Else end 
+      
+    }); //FindOne end
 
   } //Else end
 
-  var newUser = new User({
-    email,
-    username,
-    password,
-    lastname,
-    firstname,
-    bio
-  });
-
-  //Populating old user fields into the new user if the user left the fields blank
-
-  var encrypt_password = true;
-
-  if (email == '' || email == null) {
-    newUser.email = oldUser.email;
-  }
-  if (password == '' || password == null) {
-    newUser.password = oldUser.password;
-    encrypt_password = false;
-  }
-  if (lastname == '' || lastname == null) {
-    newUser.lastname = oldUser.lastname;
-  }
-  if (firstname == '' || firstname == null) {
-    newUser.firstname = oldUser.firstName;
-  }
-  /*
-  if (bio == '' || bio == null) {
-    newUser.bio = oldUser.bio;
-  }
-  */
-
-  if(encrypt_password == true) {
-    bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(newUser.password, salt, (err, hash) => {
-        if (err) throw err;
-        newUser.password = hash;
-      });
-    });
-  }
-
-  newUser.save().then(user => {
-    req.flash('success_msg', 'Profile has been updated');
-    console.log("User has updated successfully");
-    res.redirect('/home');
-  })
-  .catch(err => console.log(err));
-});
+}); //Method end
 
 /*
 router.post('/edit_profile', (req, res) => {
