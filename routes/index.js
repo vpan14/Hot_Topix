@@ -54,6 +54,25 @@ router.get('/follow_user_success', ensureAuthenticated, (req,res) => {
   res.render('follow_user_success');
 });
 
+router.post('/follow_user', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: req.body.follow_username }).then(user => {
+    if (user) {
+      res.render('follow_user_success');
+    } else {
+      res.render('follow_user_error');
+    }
+  }
+  // dbo.collection("Users").findOne(query).toArray(function(err, result) {
+  //   if (err) throw err;
+  //   console.log(result);
+  // }
+);
+
+  //res.render('follow_user');
+});
+
 //login action
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', {
