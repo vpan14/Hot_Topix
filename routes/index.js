@@ -37,11 +37,6 @@ router.get('/', (req, res) => {
   res.render('index')
 });
 
-//topic_selector
-router.get('/topic_selector', (req, res) => {
-  res.render('topic_selector')
-});
-
 //about page
 router.get('/about', (req,res) => {
   res.render('about');
@@ -65,6 +60,40 @@ router.get('/signup', forwardAuthenticated, (req, res) => {
 //edit profile page
 router.get('/edit_profile', ensureAuthenticated, (req,res) => {
   res.render('edit_profile');
+});
+
+//follow user page
+router.get('/follow_user', ensureAuthenticated, (req,res) => {
+  res.render('follow_user');
+});
+
+//follow user page ERROR
+router.get('/follow_user_error', ensureAuthenticated, (req,res) => {
+  res.render('follow_user_error');
+});
+
+//follow user page SUCCESS
+router.get('/follow_user_success', ensureAuthenticated, (req,res) => {
+  res.render('follow_user_success');
+});
+
+router.post('/follow_user', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: req.body.follow_username }).then(user => {
+    if (user) {
+      res.render('follow_user_success');
+    } else {
+      res.render('follow_user_error');
+    }
+  }
+  // dbo.collection("Users").findOne(query).toArray(function(err, result) {
+  //   if (err) throw err;
+  //   console.log(result);
+  // }
+);
+
+  //res.render('follow_user');
 });
 
 //login action
