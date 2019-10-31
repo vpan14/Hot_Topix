@@ -5,6 +5,29 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
+// npm install getstream --save
+let stream = require('getstream');
+
+let client = stream.connect("2awqgkw9rzgj", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoidXNlci1vbmUifQ.ljVM50gE9_oDeJ5pNSAPoGrOsVVIYJkXP1dpq-gv2NM");
+
+// let feed = client.feed('timeline', email);
+// feed.addActivity({
+//     'actor': client.user('user-one').ref(),
+//     'verb': 'post',
+//     'object': 'I love this picture',
+//     'attachments': {
+//         'og': {
+//             'title': 'Crozzon di Brenta photo by Lorenzo Spoleti',
+//             'description': 'Download this photo in Italy by Lorenzo Spoleti',
+//             'url': 'https://unsplash.com/photos/yxKHOTkAins',
+//             'images': [
+//                 {
+//                     'image': 'https://goo.gl/7dePYs'
+//                 }
+//             ]
+//         }
+//     }
+// })
 
 //load user model
 const User = require('../models/User.js');

@@ -8,6 +8,8 @@ const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
 
+const { ensureAuthenticated, forwardAuthenticated } = require('./config/auth');
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
@@ -69,7 +71,7 @@ if (false) {
 }
 
 
-app.get('/home', (req, res) => {
+app.get('/home', ensureAuthenticated, (req, res) => {
   //if (app.get('env') === 'development') {
   if (false) {
     res.sendFile(path.join(__dirname, 'client', 'public/index.html'));
