@@ -119,6 +119,8 @@ router.post('/edit_profile', (req, res) => {
 
   let errors = [];
 
+  var oldUser;
+
   if(!username) {
     errors.push({message: 'Enter your email.'});
   }
@@ -134,13 +136,69 @@ router.post('/edit_profile', (req, res) => {
     });
   } else {
     User.findOne({ email: email }).then(oldUser => {
-      console.log("Old user:");
-      console.log(oldUser);
-
+      if(!oldUser) {
+        errors.push({msg: 'Please enter your email.'});
+        res.render('edit_profile', {
+          errors,
+          username,
+          email,
+          password,
+          firstname,
+          lastname,
+          bio
+        });
+      }
     });
 
-    }
-  
+  } //Else end
+
+  var newUser = new User({
+    email,
+    username,
+    password,
+    lastname,
+    firstname,
+    bio
+  });
+
+  //Populating old user fields into the new user if the user left the fields blank
+
+  var encrypt_password = true;
+
+  if (email == '' || email == null) {
+    newUser.email = oldUser.email;
+  }
+  if (password == '' || password == null) {
+    newUser.password = oldUser.password;
+    encrypt_password = false;
+  }
+  if (lastname == '' || lastname == null) {
+    newUser.lastname = oldUser.lastname;
+  }
+  if (firstname == '' || firstname == null) {
+    newUser.firstname = oldUser.firstName;
+  }
+  /*
+  if (bio == '' || bio == null) {
+    newUser.bio = oldUser.bio;
+  }
+  */
+
+  if(encrypt_password == true) {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(newUser.password, salt, (err, hash) => {
+        if (err) throw err;
+        newUser.password = hash;
+      });
+    });
+  }
+
+  newUser.save().then(user => {
+    req.flash('success_msg', 'Profile has been updated');
+    console.log("User has updated successfully");
+    res.redirect('/home');
+  })
+  .catch(err => console.log(err));
 });
 
 /*
