@@ -7,6 +7,8 @@ const mongoose = require('mongoose');
 const passport = require('passport');
 const flash = require('connect-flash');
 const session = require('express-session');
+var bodyParser = require('body-parser')
+
 
 const { ensureAuthenticated, forwardAuthenticated } = require('./config/auth');
 
@@ -26,6 +28,8 @@ mongoose.connect(db, { useNewUrlParser: true }).then(() => console.log('MongoDB 
 
 //body parser
 app.use(express.urlencoded({ extended:true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 // view engine setup
 app.engine('html', require('ejs').renderFile);
