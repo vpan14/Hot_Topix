@@ -18,7 +18,11 @@ var loggedInUser;
 var currentUser;
 var feed;
 
-
+async function getFollowers(){
+  followers = await feed.followers();
+  console.log(followers)
+  return followers;
+}
 
 //welcome page
 router.get('/', (req, res) => {
@@ -31,6 +35,7 @@ router.get('/logout', function(req, res){
   res.redirect('/');
 });
 
+//get stream token
 router.get('/getToken', ensureAuthenticated, function(req, res) {
   res.send(currentUser);
 });
@@ -75,7 +80,15 @@ router.get('/edit_profile', ensureAuthenticated, (req,res) => {
 
 //follow user page
 router.get('/follow_user', ensureAuthenticated, (req,res) => {
-  res.render('follow_user');
+  getFollowers().then(function(result){
+    console.log(result);
+
+    res.render('follow_user', {
+      followers: result
+    });
+  });
+
+
 });
 
 //follow user page ERROR
@@ -142,7 +155,7 @@ router.post('/login', (req, res, next) => {
     //console.log(userToken);
     feed = client.feed('Timeline', user.username);
     //currentUser = feed.token;
-    currentUser = userToken
+    currentUser = userToken;
     //console.log(currentUser)
 
   });
