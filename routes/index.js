@@ -5,36 +5,74 @@ const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
 
-// npm install getstream --save
-let stream = require('getstream');
-
-let client = stream.connect("2awqgkw9rzgj", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoidXNlci1vbmUifQ.ljVM50gE9_oDeJ5pNSAPoGrOsVVIYJkXP1dpq-gv2NM");
-
-// let feed = client.feed('timeline', email);
-// feed.addActivity({
-//     'actor': client.user('user-one').ref(),
-//     'verb': 'post',
-//     'object': 'I love this picture',
-//     'attachments': {
-//         'og': {
-//             'title': 'Crozzon di Brenta photo by Lorenzo Spoleti',
-//             'description': 'Download this photo in Italy by Lorenzo Spoleti',
-//             'url': 'https://unsplash.com/photos/yxKHOTkAins',
-//             'images': [
-//                 {
-//                     'image': 'https://goo.gl/7dePYs'
-//                 }
-//             ]
-//         }
-//     }
-// })
-
 //load user model
 const User = require('../models/User.js');
+
+
+// npm install getstream --save
+var stream = require('getstream');
+
+
+//var userToken;
+
+client = stream.connect('sjc92jugd7js', 'rhtnurcusnqwkw4gpe2tx84wdd9wg6k92zn6q2wh9fs77t7bb8zzu8wbdvnfxhzm', '62811');
+//client.
+
+let userToken1 = client.createUserToken("user-one");
+console.log(userToken1);
+
+// client.user("vpan").getOrCreate({
+//     name: "Victor Pan",
+//     occupation: "Software Engineer",
+//     gender: 'male'
+// });
+
+var userToken = client.createUserToken("vpan");
+
+console.log(userToken);
+
+//var feed = client.feed('Timeline', 'vpan', userToken);
+
+var feed = client.feed('Timeline', 'vpan');
+
+//feed = client.feed('Timeline', 'vpan');
+// feed.follow_username(user)
+//
+// await client.setUser({
+//     name: User.username,
+//     occupation: "Software Engineer",
+//     gender: 'male'
+// });
+console.log("adding activity for");
+console.log(client.user('vpan').ref());
+feed.addActivity({
+    'actor': client.user('vpan').ref(),
+    'verb': 'post',
+    'object': 'I love this picture asdfdsf test',
+    'attachments': {
+        'og': {
+            'title': 'Crozzon di Brenta photo by Lorenzo Spoleti',
+            'description': 'Download this photo in Italy by Lorenzo Spoleti',
+            'url': 'https://unsplash.com/photos/yxKHOTkAins',
+            'images': [
+                {
+                    'image': 'https://goo.gl/7dePYs'
+                }
+            ]
+        }
+    }
+})
+
 
 //welcome page
 router.get('/', (req, res) => {
   res.render('index')
+});
+
+//logout
+router.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
 });
 
 //about page
@@ -83,6 +121,8 @@ router.post('/follow_user', (req, res) => {
   User.findOne({ username: req.body.follow_username }).then(user => {
     if (user) {
       res.render('follow_user_success');
+      //let feed = client.feed('timeline', email);
+
     } else {
       res.render('follow_user_error');
     }
@@ -103,6 +143,43 @@ router.post('/login', (req, res, next) => {
     failureRedirect: '/login',
     failureFlash: true
   })(req, res, next);
+
+  User.findOne({ email: req.body.email }).then(user => {
+
+    // console.log(user);
+    // client.setUser(user);
+    // thisUser = client.user(user.username).getOrCreate({
+    //     name: user.username,
+    //     email: user.email
+    // });
+    //
+    //
+    // console.log(thisUser);
+
+    // client.setUser(client.user(user.username).get());
+    // var user1 = client.feed('timeline', user.username);
+    // var activity = {actor: client.user(user.username).ref(), verb: 'pin', object: 'Place:42'};
+    // user1.addActivity(activity)
+    //     .then(function(data) { console.log("activity added"); })
+    //     .catch(function(reason) { console.log("error adding activity");
+    //     console.log(reason);
+    //    });
+
+
+
+  });
+  console.log("test");
+  // client.setUser(client.user(req.body.email).get());
+  // var user1 = client.feed('timeline', req.body.email);
+  // var activity = {actor: req.body.email, verb: 'pin', object: 'Place:42'};
+  // user1.addActivity(activity)
+  //     .then(function(data) { /* on success */ })
+  //     .catch(function(reason) { /* on failure, reason.error contains an explanation */ });
+
+  // console.log(client.user(req.body.email).get());
+  //console.log(client.user(req.body.email).get());
+
+  //console.log(client.user(username).get());
 });
 
 //signup action
@@ -144,6 +221,10 @@ router.post('/signup', (req, res) => {
           email,
           password,
           lastname
+        });
+
+        client.user(username).create({
+            name: "URF"
         });
 
         bcrypt.genSalt(10, (err, salt) => {

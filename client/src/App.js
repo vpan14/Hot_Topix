@@ -6,15 +6,20 @@ class App extends React.Component {
   render () {
     return (
       <StreamApp
-        apiKey="2awqgkw9rzgj"
-        appId="62539"
-        token="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoidXNlci1vbmUifQ.ljVM50gE9_oDeJ5pNSAPoGrOsVVIYJkXP1dpq-gv2NM"
+        apiKey="sjc92jugd7js"
+        appId="62811"
+        token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidnBhbiJ9.ldpOOtE5eXDuuF9tu9NVTkZikobvW0cL96rDjKDlXBY"
       >
-        <NotificationDropdown notify />
+        <NotificationDropdown
+          userId="vpan"
+          notify
+        />
         <StatusUpdateForm
-          feedGroup="timeline"
-          userId="user-one" />
+          feedGroup="Timeline"
+          userId="vpan"
+        />
         <FlatFeed
+          feedGroup = "Timeline"
           options={ {reactions: { recent: true } } }
           notify
           Activity={(props) =>
