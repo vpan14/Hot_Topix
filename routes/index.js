@@ -358,4 +358,8 @@ router.post('/edit_profile', (req, res) => {
 
 }); //Method end
 
+// router.get('/*', (req,res) => {
+//   res.render('404');
+// });
+
 module.exports = router;
