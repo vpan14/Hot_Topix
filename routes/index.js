@@ -16,7 +16,7 @@ client = stream.connect('sjc92jugd7js', 'rhtnurcusnqwkw4gpe2tx84wdd9wg6k92zn6q2w
 //client = stream.connect('sjc92jugd7js', null, '62811');
 
 var currentUser;
-
+var feed;
 // client.user("vpan").getOrCreate({
 //     name: "Victor Pan",
 //     occupation: "Software Engineer",
@@ -115,6 +115,7 @@ router.get('/follow_user_success', ensureAuthenticated, (req,res) => {
   res.render('follow_user_success');
 });
 
+//follow user
 router.post('/follow_user', (req, res) => {
   console.log(req.body);
 
@@ -122,6 +123,30 @@ router.post('/follow_user', (req, res) => {
     if (user) {
       res.render('follow_user_success');
       //let feed = client.feed('timeline', email);
+      feed.follow('Timeline', req.body.follow_username);
+
+    } else {
+      res.render('follow_user_error');
+    }
+  }
+  // dbo.collection("Users").findOne(query).toArray(function(err, result) {
+  //   if (err) throw err;
+  //   console.log(result);
+  // }
+);
+
+  //res.render('follow_user');
+});
+
+//unfollow user
+router.post('/unfollow_user', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: req.body.unfollow_username }).then(user => {
+    if (user) {
+      res.render('follow_user_success');
+      //let feed = client.feed('timeline', email);
+      feed.unfollow('Timeline', req.body.unfollow_username);
 
     } else {
       res.render('follow_user_error');
@@ -145,13 +170,13 @@ router.post('/login', (req, res, next) => {
     console.log(user);
 
     userToken = client.createUserToken(user.username);
-    console.log(userToken);
+    //console.log(userToken);
     feed = client.feed('Timeline', user.username);
     //currentUser = feed.token;
     currentUser = userToken
-    console.log(currentUser)
+    //console.log(currentUser)
 
-    var activity = {actor: client.user(user.username).ref(), verb: 'post', object: 'Logged in!'};
+    //var activity = {actor: client.user(user.username).ref(), verb: 'post', object: 'Logged in!'};
     // feed.addActivity(activity)
     //     .then(function(data) { console.log("activity added"); })
     //     .catch(function(reason) { console.log("error adding activity");
