@@ -4,6 +4,7 @@ var path = require('path')
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
 const { ensureAuthenticated, forwardAuthenticated } = require('../config/auth');
+//var popup = require('popups');
 
 //load user model
 const User = require('../models/User.js');
@@ -17,6 +18,7 @@ client = stream.connect('sjc92jugd7js', 'rhtnurcusnqwkw4gpe2tx84wdd9wg6k92zn6q2w
 var loggedInUser;
 var currentUser;
 var feed;
+var currentFollowing;
 
 async function getFollowers(){
   followers = await feed.followers();
@@ -91,6 +93,7 @@ router.get('/follow_user', ensureAuthenticated, (req,res) => {
       console.log(result);
       console.log("result2");
       console.log(result2);
+      currentFollowing = result2;
 
       res.render('follow_user', {
         followers: result,
@@ -118,12 +121,33 @@ router.post('/follow_user', (req, res) => {
 
   User.findOne({ username: req.body.follow_username }).then(user => {
     if (user) {
-      res.render('follow_user_success');
+      userfound = 0;
       //let feed = client.feed('timeline', email);
-      feed.follow('Timeline', req.body.follow_username);
+      check_string = "Timeline:" + req.body.follow_username;
+      console.log(check_string);
+      console.log("currentFollowing");
+      console.log(currentFollowing);
+      for(var i = 0; i < currentFollowing.results.length; i++){
+        console.log(currentFollowing.results[i].target_id);
+        if(check_string === currentFollowing.results[i].target_id){
+          userfound = 1;
+          break;
+        }
+      }
+      if(userfound == 0){
+        feed.follow('Timeline', req.body.follow_username);
+        res.redirect('/follow_user_success');
+      }
+      else{
+        // popup.alert({
+        //     content: "You are already following this user"
+        // });
+        console.log("You are already following this user");
+        res.redirect('/follow_user_error');
+      }
 
     } else {
-      res.render('follow_user_error');
+      res.redirect('/follow_user_error');
     }
   });
 
@@ -136,21 +160,35 @@ router.post('/unfollow_user', (req, res) => {
 
   User.findOne({ username: req.body.unfollow_username }).then(user => {
     if (user) {
-      res.render('follow_user_success');
+      userfound = 0;
       //let feed = client.feed('timeline', email);
-      feed.unfollow('Timeline', req.body.unfollow_username);
+      check_string = "Timeline:" + req.body.unfollow_username;
+      console.log(check_string);
+      console.log("currentFollowing");
+      console.log(currentFollowing);
+      for(var i = 0; i < currentFollowing.results.length; i++){
+        console.log(currentFollowing.results[i].target_id);
+        if(check_string === currentFollowing.results[i].target_id){
+          userfound = 1;
+          break;
+        }
+      }
+      if(userfound == 1){
+        feed.unfollow('Timeline', req.body.unfollow_username);
+        res.redirect('/follow_user_success');
+      }
+      else{
+        // popup.alert({
+        //     content: "You are already following this user"
+        // });
+        console.log("You are not following this user");
+        res.redirect('/follow_user_error');
+      }
 
     } else {
-      res.render('follow_user_error');
+      res.redirect('/follow_user_error');
     }
-  }
-  // dbo.collection("Users").findOne(query).toArray(function(err, result) {
-  //   if (err) throw err;
-  //   console.log(result);
-  // }
-);
-
-  //res.render('follow_user');
+  });
 });
 
 //login action
