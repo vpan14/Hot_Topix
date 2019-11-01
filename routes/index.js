@@ -16,7 +16,7 @@ client = stream.connect('sjc92jugd7js', 'rhtnurcusnqwkw4gpe2tx84wdd9wg6k92zn6q2w
 //client = stream.connect('sjc92jugd7js', null, '62811');
 
 var currentUser;
-
+var feed;
 // client.user("vpan").getOrCreate({
 //     name: "Victor Pan",
 //     occupation: "Software Engineer",
@@ -122,6 +122,7 @@ router.post('/follow_user', (req, res) => {
     if (user) {
       res.render('follow_user_success');
       //let feed = client.feed('timeline', email);
+      feed.follow('Timeline', req.body.follow_username);
 
     } else {
       res.render('follow_user_error');
@@ -145,13 +146,13 @@ router.post('/login', (req, res, next) => {
     console.log(user);
 
     userToken = client.createUserToken(user.username);
-    console.log(userToken);
+    //console.log(userToken);
     feed = client.feed('Timeline', user.username);
     //currentUser = feed.token;
     currentUser = userToken
-    console.log(currentUser)
+    //console.log(currentUser)
 
-    var activity = {actor: client.user(user.username).ref(), verb: 'post', object: 'Logged in!'};
+    //var activity = {actor: client.user(user.username).ref(), verb: 'post', object: 'Logged in!'};
     // feed.addActivity(activity)
     //     .then(function(data) { console.log("activity added"); })
     //     .catch(function(reason) { console.log("error adding activity");
