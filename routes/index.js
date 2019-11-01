@@ -10,12 +10,32 @@ const User = require('../models/User.js');
 
 
 // npm install getstream --save
-let stream = require('getstream');
+var stream = require('getstream');
+
 
 //var userToken;
 
-let client = stream.connect("2awqgkw9rzgj", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoidXNlci1vbmUifQ.ljVM50gE9_oDeJ5pNSAPoGrOsVVIYJkXP1dpq-gv2NM");
+client = stream.connect('sjc92jugd7js', 'rhtnurcusnqwkw4gpe2tx84wdd9wg6k92zn6q2wh9fs77t7bb8zzu8wbdvnfxhzm', '62811');
+//client.
 
+let userToken1 = client.createUserToken("user-one");
+console.log(userToken1);
+
+// client.user("vpan").getOrCreate({
+//     name: "Victor Pan",
+//     occupation: "Software Engineer",
+//     gender: 'male'
+// });
+
+var userToken = client.createUserToken("vpan");
+
+console.log(userToken);
+
+//var feed = client.feed('Timeline', 'vpan', userToken);
+
+var feed = client.feed('Timeline', 'vpan');
+
+//feed = client.feed('Timeline', 'vpan');
 // feed.follow_username(user)
 //
 // await client.setUser({
@@ -23,23 +43,25 @@ let client = stream.connect("2awqgkw9rzgj", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ
 //     occupation: "Software Engineer",
 //     gender: 'male'
 // });
-// feed.addActivity({
-//     'actor': client.user('user-one').ref(),
-//     'verb': 'post',
-//     'object': 'I love this picture',
-//     'attachments': {
-//         'og': {
-//             'title': 'Crozzon di Brenta photo by Lorenzo Spoleti',
-//             'description': 'Download this photo in Italy by Lorenzo Spoleti',
-//             'url': 'https://unsplash.com/photos/yxKHOTkAins',
-//             'images': [
-//                 {
-//                     'image': 'https://goo.gl/7dePYs'
-//                 }
-//             ]
-//         }
-//     }
-// })
+console.log("adding activity for");
+console.log(client.user('vpan').ref());
+feed.addActivity({
+    'actor': client.user('vpan').ref(),
+    'verb': 'post',
+    'object': 'I love this picture asdfdsf test',
+    'attachments': {
+        'og': {
+            'title': 'Crozzon di Brenta photo by Lorenzo Spoleti',
+            'description': 'Download this photo in Italy by Lorenzo Spoleti',
+            'url': 'https://unsplash.com/photos/yxKHOTkAins',
+            'images': [
+                {
+                    'image': 'https://goo.gl/7dePYs'
+                }
+            ]
+        }
+    }
+})
 
 
 //welcome page
@@ -134,14 +156,14 @@ router.post('/login', (req, res, next) => {
     //
     // console.log(thisUser);
 
-    client.setUser(client.user(user.username).get());
-    var user1 = client.feed('timeline', user.username);
-    var activity = {actor: client.user(user.username).ref(), verb: 'pin', object: 'Place:42'};
-    user1.addActivity(activity)
-        .then(function(data) { console.log("activity added"); })
-        .catch(function(reason) { console.log("error adding activity");
-        console.log(reason);
-       });
+    // client.setUser(client.user(user.username).get());
+    // var user1 = client.feed('timeline', user.username);
+    // var activity = {actor: client.user(user.username).ref(), verb: 'pin', object: 'Place:42'};
+    // user1.addActivity(activity)
+    //     .then(function(data) { console.log("activity added"); })
+    //     .catch(function(reason) { console.log("error adding activity");
+    //     console.log(reason);
+    //    });
 
 
 
