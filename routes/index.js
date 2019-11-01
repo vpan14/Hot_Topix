@@ -88,6 +88,16 @@ router.get('/edit_profile', ensureAuthenticated, (req,res) => {
 
 //follow user page
 router.get('/follow_user', ensureAuthenticated, (req,res) => {
+  var usersList;
+  User.find({}, 'username', function(err, users){
+    if(err){
+      console.log(err);
+    } else{
+        usersList = users;
+        console.log('retrieved list of names', users);
+    }
+  });
+
   getFollowers().then(function(result){
     getFollowing().then(function(result2){
       console.log(result);
@@ -97,7 +107,8 @@ router.get('/follow_user', ensureAuthenticated, (req,res) => {
 
       res.render('follow_user', {
         followers: result,
-        following: result2
+        following: result2,
+        users: usersList
       });
     });
   });
