@@ -115,6 +115,7 @@ router.get('/follow_user_success', ensureAuthenticated, (req,res) => {
   res.render('follow_user_success');
 });
 
+//follow user
 router.post('/follow_user', (req, res) => {
   console.log(req.body);
 
@@ -123,6 +124,29 @@ router.post('/follow_user', (req, res) => {
       res.render('follow_user_success');
       //let feed = client.feed('timeline', email);
       feed.follow('Timeline', req.body.follow_username);
+
+    } else {
+      res.render('follow_user_error');
+    }
+  }
+  // dbo.collection("Users").findOne(query).toArray(function(err, result) {
+  //   if (err) throw err;
+  //   console.log(result);
+  // }
+);
+
+  //res.render('follow_user');
+});
+
+//unfollow user
+router.post('/unfollow_user', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: req.body.unfollow_username }).then(user => {
+    if (user) {
+      res.render('follow_user_success');
+      //let feed = client.feed('timeline', email);
+      feed.unfollow('Timeline', req.body.unfollow_username);
 
     } else {
       res.render('follow_user_error');
