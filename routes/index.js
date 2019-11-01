@@ -162,7 +162,7 @@ router.post('/signup', (req, res) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
-  const lastname = req.body.lastname;
+  const fullname = req.body.lastname;
   let errors = [];
 
   console.log(req.body);
@@ -177,7 +177,7 @@ router.post('/signup', (req, res) => {
       username,
       email,
       password,
-      lastname
+      fullname
     });
   } else {
     User.findOne({ email: email }).then(user => {
@@ -188,18 +188,18 @@ router.post('/signup', (req, res) => {
           username,
           email,
           password,
-          lastname
+          fullname
         })
       } else {
         const newUser = new User({
           username,
           email,
           password,
-          lastname
+          fullname
         });
 
         client.user(username).create({
-            name: lastname
+            name: fullname
         });
 
         bcrypt.genSalt(10, (err, salt) => {
@@ -271,7 +271,7 @@ router.post('/edit_profile', (req, res) => {
           email,
           username,
           password,
-          lastname: fullname,
+          fullname,
           bio
         });
         //console.log("new user:")
