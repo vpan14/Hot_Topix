@@ -57,7 +57,7 @@
         <table>
         <% for(var i=0; i < followers.results.length; i++) { %>
            <tr>
-             <td><%= followers.results[i].feed_id %></td>
+             <td><%= followers.results[i].feed_id.substring(9) %></td>
            </tr>
         <% } %>
         </table>
@@ -71,7 +71,7 @@
         <table>
         <% for(var i=0; i < following.results.length; i++) { %>
            <tr>
-             <td><%= following.results[i].target_id %></td>
+             <td><%= following.results[i].target_id.substring(9) %></td>
            </tr>
         <% } %>
         </table>
