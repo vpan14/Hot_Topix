@@ -152,11 +152,11 @@ router.post('/login', (req, res, next) => {
     console.log(currentUser)
 
     var activity = {actor: client.user(user.username).ref(), verb: 'post', object: 'Logged in!'};
-    feed.addActivity(activity)
-        .then(function(data) { console.log("activity added"); })
-        .catch(function(reason) { console.log("error adding activity");
-        console.log(reason);
-       });
+    // feed.addActivity(activity)
+    //     .then(function(data) { console.log("activity added"); })
+    //     .catch(function(reason) { console.log("error adding activity");
+    //     console.log(reason);
+    //    });
 
   });
 
