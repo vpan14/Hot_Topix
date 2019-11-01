@@ -5,7 +5,10 @@ import 'react-activity-feed/dist/index.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { apiResponse: "asdf" };
+    this.state = {
+      apiResponse: "asdf",
+      loaded: false
+    };
   }
 
   getToken () {
@@ -13,8 +16,11 @@ class App extends React.Component {
     fetch("http://localhost:3001/getToken")
     .then(res => res.text())
     .then(res => {
-      this.setState({ apiResponse: res });
-      console.log(res);
+      this.setState({
+        apiResponse: res,
+        loaded: true
+      });
+      //console.log(res);
     })
     .catch(err => {console.log(err);}
     );
@@ -26,26 +32,27 @@ class App extends React.Component {
   }
 
   render () {
-    console.log(this.state.apiResponse);
+    //console.log(process.env['REACT_APP_API']);
+    //console.log(process.env['REACT_APP_ID']);
+    //console.log(this.state.apiResponse);
+    if(!this.state.loaded) {
+      return null;
+    }
     return (
       // <div>
       // <p>{this.state.apiResponse}</p>
       <StreamApp
-        // apiKey={this.token.apiResponse}
-        // appId={this.token.apiResponse}
-        // token={this.token.apiResponse}
         apiKey="sjc92jugd7js"
         appId="62811"
-        token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidnBhbiJ9.ldpOOtE5eXDuuF9tu9NVTkZikobvW0cL96rDjKDlXBY"
-        //token={this.state.apiResponse}
+        token={this.state.apiResponse}
       >
         <NotificationDropdown
-          userId="vpan"
+          //userId="vpan"
           notify
         />
         <StatusUpdateForm
           feedGroup="Timeline"
-          userId="vpan"
+          //userId="vpan"
         />
         <FlatFeed
           feedGroup = "Timeline"
