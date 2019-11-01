@@ -47,7 +47,9 @@
 
         <p>
           Current User:
+          <% if(followers.results.length != 0) { %>
           <%= followers.results[0].target_id.substring(9) %>
+          <% } %>
         </p>
 
         <p>
@@ -55,10 +57,12 @@
         </p>
 
         <table>
+        <% if(followers.results.length != 0) { %>
         <% for(var i=0; i < followers.results.length; i++) { %>
            <tr>
              <td><%= followers.results[i].feed_id.substring(9) %></td>
            </tr>
+        <% } %>
         <% } %>
         </table>
 
@@ -69,10 +73,12 @@
         </p>
 
         <table>
+        <% if(followers.results.length != 0) { %>
         <% for(var i=0; i < following.results.length; i++) { %>
            <tr>
              <td><%= following.results[i].target_id.substring(9) %></td>
            </tr>
+        <% } %>
         <% } %>
         </table>
 
