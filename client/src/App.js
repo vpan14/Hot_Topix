@@ -3,12 +3,41 @@ import { StreamApp, NotificationDropdown, FlatFeed, LikeButton, Activity, Commen
 import 'react-activity-feed/dist/index.css';
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { apiResponse: "asdf" };
+  }
+
+  getToken () {
+    console.log("called getToken");
+    fetch("http://localhost:3001/getToken")
+    .then(res => res.text())
+    .then(res => {
+      this.setState({ apiResponse: res });
+      console.log(res);
+    })
+    .catch(err => {console.log(err);}
+    );
+  }
+
+  componentWillMount() {
+      this.getToken();
+      console.log("calling getToken");
+  }
+
   render () {
+    console.log(this.state.apiResponse);
     return (
+      // <div>
+      // <p>{this.state.apiResponse}</p>
       <StreamApp
+        // apiKey={this.token.apiResponse}
+        // appId={this.token.apiResponse}
+        // token={this.token.apiResponse}
         apiKey="sjc92jugd7js"
         appId="62811"
         token="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoidnBhbiJ9.ldpOOtE5eXDuuF9tu9NVTkZikobvW0cL96rDjKDlXBY"
+        //token={this.state.apiResponse}
       >
         <NotificationDropdown
           userId="vpan"
@@ -37,6 +66,7 @@ class App extends React.Component {
             }
           />
       </StreamApp>
+      // </div>
     );
   }
 }
