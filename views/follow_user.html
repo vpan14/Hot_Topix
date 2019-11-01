@@ -45,6 +45,22 @@
           <button class="btn btn-primary form-btn" value="Submit" type="submit">Unfollow</button>
         </form>
 
+        <p>
+          Current User:
+          <%= followers.results[0].target_id %>
+        </p>
+
+        <p>
+          Current Users Followed:
+        </p>
+
+        <table>
+        <% for(var i=0; i < followers.results.length; i++) { %>
+           <tr>
+             <td><%= followers.results[i].feed_id %></td>
+           </tr>
+        <% } %>
+        </table>
 
 </div>
   </div>
