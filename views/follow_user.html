@@ -51,13 +51,27 @@
         </p>
 
         <p>
-          Current Users Followed:
+          Current Users Following You:
         </p>
 
         <table>
         <% for(var i=0; i < followers.results.length; i++) { %>
            <tr>
              <td><%= followers.results[i].feed_id %></td>
+           </tr>
+        <% } %>
+        </table>
+
+
+        <br>
+        <p>
+          Current Users You Follow:
+        </p>
+
+        <table>
+        <% for(var i=0; i < following.results.length; i++) { %>
+           <tr>
+             <td><%= following.results[i].target_id %></td>
            </tr>
         <% } %>
         </table>

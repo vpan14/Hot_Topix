@@ -24,6 +24,12 @@ async function getFollowers(){
   return followers;
 }
 
+async function getFollowing(){
+  followers = await feed.following();
+  console.log(followers)
+  return followers;
+}
+
 //welcome page
 router.get('/', (req, res) => {
   res.render('index')
@@ -81,10 +87,15 @@ router.get('/edit_profile', ensureAuthenticated, (req,res) => {
 //follow user page
 router.get('/follow_user', ensureAuthenticated, (req,res) => {
   getFollowers().then(function(result){
-    console.log(result);
+    getFollowing().then(function(result2){
+      console.log(result);
+      console.log("result2");
+      console.log(result2);
 
-    res.render('follow_user', {
-      followers: result
+      res.render('follow_user', {
+        followers: result,
+        following: result2
+      });
     });
   });
 
