@@ -14,50 +14,10 @@ var stream = require('getstream');
 
 client = stream.connect('sjc92jugd7js', 'rhtnurcusnqwkw4gpe2tx84wdd9wg6k92zn6q2wh9fs77t7bb8zzu8wbdvnfxhzm', '62811');
 //client = stream.connect('sjc92jugd7js', null, '62811');
-
+var loggedInUser;
 var currentUser;
 var feed;
-// client.user("vpan").getOrCreate({
-//     name: "Victor Pan",
-//     occupation: "Software Engineer",
-//     gender: 'male'
-// });
 
-// var userToken = client.createUserToken("vpan");
-//
-// console.log(userToken);
-//
-// //var feed = client.feed('Timeline', 'vpan', userToken);
-//
-// var feed = client.feed('Timeline', 'vpan');
-
-//feed = client.feed('Timeline', 'vpan');
-// feed.follow_username(user)
-//
-// await client.setUser({
-//     name: User.username,
-//     occupation: "Software Engineer",
-//     gender: 'male'
-// });
-// console.log("adding activity for");
-// console.log(client.user('vpan').ref());
-// feed.addActivity({
-//     'actor': client.user('vpan').ref(),
-//     'verb': 'post',
-//     'object': 'I love this picture asdfdsf test',
-//     'attachments': {
-//         'og': {
-//             'title': 'Crozzon di Brenta photo by Lorenzo Spoleti',
-//             'description': 'Download this photo in Italy by Lorenzo Spoleti',
-//             'url': 'https://unsplash.com/photos/yxKHOTkAins',
-//             'images': [
-//                 {
-//                     'image': 'https://goo.gl/7dePYs'
-//                 }
-//             ]
-//         }
-//     }
-// })
 
 
 //welcome page
@@ -97,7 +57,20 @@ router.get('/signup', forwardAuthenticated, (req, res) => {
 
 //edit profile page
 router.get('/edit_profile', ensureAuthenticated, (req,res) => {
-  res.render('edit_profile');
+  // console.log(loggedInUser);
+  //
+  // User.findOne({ username: loggedInUser.username }).then(user => {
+  //   if (user) {
+  //     loggedInUser = user;
+  //
+  //   } else {
+  //     console.log("error finding user")
+  //   }
+  // });
+
+  res.render('edit_profile', {
+    user: loggedInUser
+  });
 });
 
 //follow user page
@@ -128,12 +101,7 @@ router.post('/follow_user', (req, res) => {
     } else {
       res.render('follow_user_error');
     }
-  }
-  // dbo.collection("Users").findOne(query).toArray(function(err, result) {
-  //   if (err) throw err;
-  //   console.log(result);
-  // }
-);
+  });
 
   //res.render('follow_user');
 });
@@ -168,6 +136,7 @@ router.post('/login', (req, res, next) => {
   User.findOne({ email: req.body.email }).then(user => {
 
     console.log(user);
+    loggedInUser = user;
 
     userToken = client.createUserToken(user.username);
     //console.log(userToken);
@@ -175,13 +144,6 @@ router.post('/login', (req, res, next) => {
     //currentUser = feed.token;
     currentUser = userToken
     //console.log(currentUser)
-
-    //var activity = {actor: client.user(user.username).ref(), verb: 'post', object: 'Logged in!'};
-    // feed.addActivity(activity)
-    //     .then(function(data) { console.log("activity added"); })
-    //     .catch(function(reason) { console.log("error adding activity");
-    //     console.log(reason);
-    //    });
 
   });
 
@@ -260,12 +222,17 @@ router.post('/signup', (req, res) => {
 router.post('/edit_profile', (req, res) => {
 
   console.log(req.pass);
+  console.log(req.body.username);
+  console.log(req.body.email);
+  console.log(req.body.bio);
+  console.log(req.body.fullname);
+
   const email = req.body.email;
   const username = req.body.username;
   const password = req.body.password;
   const confirmPassword = req.body.confirmpass;
-  const lastname = req.body.lastname;
-  const firstname = req.body.firstname;
+  //const lastname = req.body.lastname;
+  const fullname = req.body.fullname;
   const bio = req.body.bio;
 
   let errors = [];
@@ -280,14 +247,15 @@ router.post('/edit_profile', (req, res) => {
   }
 
   if(errors.length > 0) {
+    console.log("rendering errors");
     res.render('edit_profile', {
       errors,
       username,
       email,
       password,
-      firstname,
-      lastname,
-      bio
+      fullname,
+      bio,
+      user: loggedInUser
     });
   } else {
     User.findOne({ email : email }, function (err, oldUser) {
@@ -303,10 +271,11 @@ router.post('/edit_profile', (req, res) => {
           email,
           username,
           password,
-          lastname,
-          firstname,
+          lastname: fullname,
           bio
         });
+        //console.log("new user:")
+        //console.log(newUser);
         let encrypt_password = true;
 
         if (email == '' || email == null) {
@@ -317,12 +286,12 @@ router.post('/edit_profile', (req, res) => {
           newUser.password = oldUser.password;
           encrypt_password = false;
         }
-        if (lastname == '' || lastname == null) {
-          newUser.lastname = oldUser.lastname;
-        }
-        if (firstname == '' || firstname == null) {
-          newUser.firstname = oldUser.firstName;
-        }
+        // if (fullname == '' || lastname == null) {
+        //   newUser.lastname = oldUser.lastname;
+        // }
+        // if (firstname == '' || firstname == null) {
+        //   newUser.firstname = oldUser.firstName;
+        // }
 
         if (bio == '' || bio == null) {
           newUser.bio = oldUser.bio;
@@ -343,6 +312,9 @@ router.post('/edit_profile', (req, res) => {
                   console.log(err);
                 }
                 else {
+                  loggedInUser = newUser;
+                  //console.log(loggedInUser);
+
                   req.flash('success_msg', 'Profile has been updated');
                   console.log("User has updated successfully");
                   res.redirect('/home');
@@ -365,6 +337,9 @@ router.post('/edit_profile', (req, res) => {
             console.log(err);
           }
           else {
+            loggedInUser = newUser;
+            //console.log(loggedInUser);
+
             req.flash('success_msg', 'Profile has been updated');
             console.log("User has updated successfully");
             res.redirect('/home');
