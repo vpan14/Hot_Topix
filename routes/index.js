@@ -100,6 +100,7 @@ router.get('/follow_user', ensureAuthenticated, (req,res) => {
 
   getFollowers().then(function(result){
     getFollowing().then(function(result2){
+      console.log("result");
       console.log(result);
       console.log("result2");
       console.log(result2);
