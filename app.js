@@ -10,7 +10,7 @@ const session = require('express-session');
 var bodyParser = require('body-parser')
 
 
-const { ensureAuthenticated, forwardAuthenticated } = require('./config/auth');
+//const { ensureAuthenticated, forwardAuthenticated } = require('./config/auth');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -75,14 +75,14 @@ if (false) {
 }
 
 
-app.get('/home', ensureAuthenticated, (req, res) => {
-  //if (app.get('env') === 'development') {
-  if (false) {
-    res.sendFile(path.join(__dirname, 'client', 'public/index.html'));
-  } else {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  }
-});
+// app.get('/home', ensureAuthenticated, (req, res) => {
+//   //if (app.get('env') === 'development') {
+//   if (false) {
+//     res.sendFile(path.join(__dirname, 'client', 'public/index.html'));
+//   } else {
+//     res.sendFile(path.join(__dirname, 'build', 'index.html'));
+//   }
+// });
 
 
 module.exports = app;
