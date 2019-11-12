@@ -32,9 +32,24 @@ async function getFollowing(){
   return followers;
 }
 
+async function getActivities(){
+  activities = await feed.get({ limit:5, offset:5 });
+  return activities;
+}
+
 //welcome page
 router.get('/', (req, res) => {
   res.render('index');
+});
+
+router.get('/home', ensureAuthenticated, (req, res) => {
+    console.log("getting activities");
+    getActivities().then(function(result){
+      console.log("got activities");
+      console.log(result);
+    });
+
+    res.render(path.join(__dirname, '../build', 'index.html'));
 });
 
 //logout
@@ -82,6 +97,13 @@ router.get('/edit_profile', ensureAuthenticated, (req,res) => {
   // });
 
   res.render('edit_profile', {
+    user: loggedInUser
+  });
+});
+
+//profile page
+router.get('/profile', ensureAuthenticated, (req,res) => {
+  res.render('profile', {
     user: loggedInUser
   });
 });
