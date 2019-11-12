@@ -34,7 +34,7 @@ async function getFollowing(){
 
 //welcome page
 router.get('/', (req, res) => {
-  res.render('index')
+  res.render('index');
 });
 
 //logout
@@ -60,12 +60,12 @@ router.get('/contact', (req,res) => {
 
 //login page
 router.get('/login', forwardAuthenticated, (req, res) => {
-  res.render('login')
+  res.render('login');
 });
 
 //signup page
 router.get('/signup', forwardAuthenticated, (req, res) => {
-  res.render('signup')
+  res.render('signup');
 });
 
 //edit profile page
@@ -100,15 +100,19 @@ router.get('/follow_user', ensureAuthenticated, (req,res) => {
 
   getFollowers().then(function(result){
     getFollowing().then(function(result2){
+      console.log("result");
       console.log(result);
       console.log("result2");
       console.log(result2);
       currentFollowing = result2;
+      console.log("loggedInUser");
+      console.log(loggedInUser);
 
       res.render('follow_user', {
         followers: result,
         following: result2,
-        users: usersList
+        users: usersList,
+        loggedInUser: loggedInUser
       });
     });
   });
