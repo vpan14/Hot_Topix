@@ -101,6 +101,13 @@ router.get('/edit_profile', ensureAuthenticated, (req,res) => {
   });
 });
 
+//profile page
+router.get('/profile', ensureAuthenticated, (req,res) => {
+  res.render('profile', {
+    user: loggedInUser
+  });
+});
+
 //follow user page
 router.get('/follow_user', ensureAuthenticated, (req,res) => {
   var usersList;
