@@ -2,6 +2,19 @@ import React from 'react';
 import { StreamApp, NotificationDropdown, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed';
 import 'react-activity-feed/dist/index.css';
 
+var urlString = window.location.href;
+var splitString = urlString.split('/');
+urlString = splitString[0] + "/" + splitString[1] + "/" + splitString[2] + "/getToken";
+console.log(urlString);
+//urlString = "http://localhost:3001/getToken";
+// if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+//     // dev code
+//     urlString = "http://localhost:3001/getToken";
+// } else {
+//     // production code
+//     urlString = "https://hottopix.herokuapp.com/getToken";
+// }
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -13,7 +26,7 @@ class App extends React.Component {
 
   getToken () {
     console.log("called getToken");
-    fetch("http://localhost:3001/getToken")
+    fetch(urlString)
     .then(res => res.text())
     .then(res => {
       this.setState({
