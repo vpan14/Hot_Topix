@@ -1,5 +1,6 @@
 import React from 'react';
 import { StreamApp, NotificationDropdown, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed';
+import TopicSelect from './topic_selector_comp.js'
 import 'react-activity-feed/dist/index.css';
 
 class App extends React.Component {
