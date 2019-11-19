@@ -1,7 +1,8 @@
 import React from 'react';
 import { StreamApp, NotificationDropdown, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed';
-import TopicSelect from './topic_selector_comp.js'
+import TopicSelect from './topic_selector_comp.js';
 import 'react-activity-feed/dist/index.css';
+import'./topic_selector_comp.css';
 
 var urlString = window.location.href;
 var splitString = urlString.split('/');
@@ -53,13 +54,19 @@ class App extends React.Component {
       return null;
     }
     return (
-      // <div>
+      <div>
       // <p>{this.state.apiResponse}</p>
+
+      <div style={ {padding: '8px 16px'} }>
+        <TopicSelect/>
+      </div>
+
       <StreamApp
         apiKey="sjc92jugd7js"
         appId="62811"
         token={this.state.apiResponse}
       >
+
         <NotificationDropdown
           //userId="vpan"
           notify
@@ -74,7 +81,7 @@ class App extends React.Component {
           notify
           Activity={(props) =>
               <Activity {...props}
-                Footer={() => (
+              Footer={() => (
                   <div style={ {padding: '8px 16px'} }>
                     <LikeButton {...props} />
                     <CommentField
@@ -87,7 +94,7 @@ class App extends React.Component {
             }
           />
       </StreamApp>
-      // </div>
+      </div>
     );
   }
 }
