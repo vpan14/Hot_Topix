@@ -48,44 +48,6 @@
     background-color: #0093d5;
   }
   
-  /* Styles to customize the UI framework plugin (MUI, https://muicss.com) */
-  .mui-btn {
-      padding-left: 0;
-      padding-right: 0;
-      margin-top: 0;
-      margin-bottom: 0;
-  }
-  .mui-btn--primary {
-      background-color: #bee9ee;
-  }
-  .mui-btn--primary:active, .mui-btn--primary:focus, .mui-btn--primary:hover {
-      background-color: #c3ebf0;
-  }
-  .mui-btn--accent {
-      background-color: #0093d5;
-  }
-  .mui-btn--accent:active, .mui-btn--accent:focus, .mui-btn--accent:hover {
-      background-color: #069fda;
-  }
-  .mui-textfield {  /* Reset UI framework styling that affects layout */
-      padding-top: 0;
-      margin-bottom: 0;
-  }
-  .mui-checkbox, .mui-radio {  /* Reset UI framework styling that affects layout */
-      margin-top: 0;
-      margin-bottom: 0;
-  }
-  .mui-select {  /* Reset UI framework styling that affects layout */
-      padding-top: 0;
-      margin-bottom: 0;
-  }
-  .mui-btn+.mui-btn {  /* Reset UI framework styling that affects layout */
-      margin-left: 0;
-  }
-  .mui-btn--fab {  /* Reset UI framework styling that breaks compositing */
-      z-index: auto;
-  }
-  
   @keyframes fadeIn {
       0%   { opacity: 0.0; }
       100% { opacity: 1.0; }
@@ -97,76 +59,6 @@
   @keyframes slideIn_bottom {
       0%   { transform: translateY(100%); }
       100% { transform: translateY(0); }
-  }
-  
-  /* System font classes */
-  
-  .TopicSelect .systemFontRegular {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", sans-serif;
-  }
-  .TopicSelect .systemFontBold {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", sans-serif;
-    font-weight: 600;
-  }
-  .TopicSelect .systemFontItalic {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", sans-serif;
-    font-style: italic;
-  }
-  .TopicSelect .systemFontBoldItalic {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", sans-serif;
-    font-weight: 600;
-    font-style: italic;
-  }
-  
-  /* App-wide text styles specified in React Studio */
-  
-  .TopicSelect .actionFont {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", sans-serif;
-    font-size: 14.2px;
-    font-weight: 400;
-  }
-  .TopicSelect .actionFont * {
-    font-size: 14.2px;
-  }
-  .TopicSelect .headlineFont {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", sans-serif;
-    font-size: 19.0px;
-    font-weight: 400;
-  }
-  .TopicSelect .headlineFont * {
-    font-size: 19.0px;
-  }
-  .TopicSelect .navBar {
-    background-color: #bee9ee;
-    color: black;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 62px;
-    min-height: 62px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", sans-serif;
-    font-size: 18px;
-  }
-  
-  .TopicSelect .navBar a {
-    color: black;
-  }
-  
-  .TopicSelect .navBar .title {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    padding: 4px;
-    margin-top: 13px;
-  }
-  
-  .TopicSelect .navBar .backBtn {
-    position: absolute;
-    padding: 4px;
-    margin-left: 14px;
-    margin-top: 13px;
-    cursor: pointer;
   }
   
   @media (min-width: 320px) {
@@ -188,15 +80,6 @@
     .mui-container {
       max-width: 1024px;
     }
-  }
-  
-  .AppScreen {
-    padding-left: 0;
-    padding-right: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: auto;
   }
   
   .TopicSelect .background {
@@ -240,248 +123,42 @@
     height: 100%;
     pointer-events: none;
   }
-  
-  .TopicSelect ul {
-    margin: 0;
-    padding: 0;
+
+  .List {
+    margin: 10px;
+    padding: 10px;
+
+    align-items: flex-start;
+    flex-direction: row-reverse;
+    flex-flow: wrap;
+
+    justify-content: space-between;
   }
-  .TopicSelect li {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    position: relative;
+
+  .list_div {
+    display: flex;
+    padding: 10px;
+    flex-direction: row;
+    flex-flow: row;
+    justify-content: space-between;
   }
-  .TopicSelect .hasNestedComps {
-    position: relative;
+
+  .item {
+    align-self: center;
+    overflow: scroll;
   }
-  .TopicSelect .hasNestedComps:after {
-    content: "";
-    display: table;
-    clear: both;
+
+  .add_btn {
+    margin: 15px;
   }
-  .TopicSelect .hasNestedComps .background {
-    position: absolute;
+
+  .comp_div {
+    width: 320px;
+    padding: 10px;
+    border: 4px solid rgb(212, 0, 0);
+    margin: 10px; 
   }
-  .TopicSelect .hasNestedComps .layoutFlow {
-    position: relative;
+
+  .inner_div {
+    margin: 5px;
   }
-  .TopicSelect .bottomAlignedContent {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
-  
-  .TopicSelect .blockInputOverlay {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: auto;
-    z-index: 99999999;
-  }
-  
-  /* This component has a fixed-size layout */
-    .ListItem2 {
-      min-height: 23px;
-      overflow: hidden;
-      width: 100%; /* This component was designed using a width of 233px */
-      height: 100%;
-    }
-    .ListItem2 > .background > .containerMinHeight {
-      min-height: 23px;
-    }
-  
-  /* This component has a fixed-size layout */
-    .TopicSelect {
-      min-height: 532px;
-      width: 100%; /* This component was designed using a width of 503px */
-      height: 100%;
-    }
-    .TopicSelect > .background > .containerMinHeight {
-      min-height: 532px;
-    }
-  
-  
-    .TopicSelect > .layoutFlow > .elTextarea {
-      position: relative;
-      margin-top: 30px;
-      margin-left: 5.0%;
-      margin-right: 35.6%;
-      width: calc(59.4% - 0px);
-    }
-    .TopicSelect > .layoutFlow > .elTextarea > * { 
-      width: 100%;
-    height: 50px;
-    }
-    
-  
-  .TopicSelect .elButton button {
-    cursor: pointer;
-    border: 0.0px solid transparent;
-    border-radius: 3.4px;
-  }
-  
-  .TopicSelect .elButton button:focus {
-    box-shadow: 0 0 5px rgba(0, 149, 214, 0.5000);
-    outline: none;
-  }
-  
-  
-  @keyframes fadeIn_TopicSelector_elButton {
-    from { opacity: 0.0; }
-    to   { opacity: 1.0; }
-  }
-  .TopicSelect > .layoutFlow > .elButton {
-    animation: 0.25s fadeIn_TopicSelector_elButton;
-  }
-  
-    .TopicSelect > .layoutFlow > .elButton {
-      line-height: 45px;
-      position: relative;
-      margin-top: -46px;
-      margin-left: calc(69.4% + -1px);
-      margin-right: calc(5.0% + 0px);
-      width: calc(25.6% - -1px);
-    }
-    .TopicSelect > .layoutFlow > .elButton > * { 
-      width: 100%;
-    height: 45px;
-    }
-    
-  
-    .TopicSelect .elList li {
-      margin-bottom: 5px;
-    }
-  
-  
-  
-    .TopicSelect > .layoutFlow > .elList {
-      position: relative;
-      margin-top: 165px;
-      margin-right: 1px;
-      width: calc(100.0% - 1px);
-    }
-    .TopicSelect > .layoutFlow > .elList > * { 
-      width: 100%;
-    }
-    
-  
-  
-  /* Narrowest size for this element's responsive layout */
-    .ScratchPadScreen > .background > .elBackground {
-      position: absolute;
-      left: 0px;
-      right: 0px;
-      top: 0px;
-      width: 100.0%;
-      height: 100%;
-    }
-  @media (min-width: 568px) {
-    .ScratchPadScreen > .background > .elBackground {
-      left: 0px;
-      right: 0px;
-      top: 0px;
-      width: 100.0%;
-      height: 100%;
-    }
-  }
-  @media (min-width: 768px) {
-    .ScratchPadScreen > .background > .elBackground {
-      left: 0px;
-      right: 0px;
-      top: 0px;
-      width: 100.0%;
-      height: 100%;
-    }
-  }
-  @media (min-width: 1024px) {
-    .ScratchPadScreen > .background > .elBackground {
-      left: 0px;
-      right: 0px;
-      top: 0px;
-      width: 100.0%;
-      height: 100%;
-    }
-  }
-  
-  .ScratchPadScreen .elTopicSelector {
-    overflow: hidden;
-  }
-  
-  .ScratchPadScreen .elTopicSelector.hasNestedComps > div {
-    overflow: hidden;
-    position: relative;
-  }
-  
-  
-  
-  /* Narrowest size for this element's responsive layout */
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector {
-      position: relative;
-      margin-top: 219px;
-      margin-left: 18.9%;
-      margin-right: 18.4%;
-      width: calc(62.7% - 0px);
-    }
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector > * { 
-      width: 100%;
-    }
-    
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector > .background > .containerMinHeight {
-      min-height: 500px;
-    }
-  
-  @media (min-width: 568px) {
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector {
-      position: relative;
-      margin-top: 218px;
-      margin-left: 18.9%;
-      margin-right: 18.4%;
-      width: calc(62.7% - 0px);
-    }
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector > * { 
-      width: 100%;
-    }
-    
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector > .background > .containerMinHeight {
-      min-height: 500px;
-    }
-  
-  }
-  @media (min-width: 768px) {
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector {
-      position: relative;
-      margin-top: 218px;
-      margin-left: 18.9%;
-      margin-right: 18.4%;
-      width: calc(62.7% - 0px);
-    }
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector > * { 
-      width: 100%;
-    }
-    
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector > .background > .containerMinHeight {
-      min-height: 500px;
-    }
-  
-  }
-  @media (min-width: 1024px) {
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector {
-      position: relative;
-      margin-top: 218px;
-      margin-left: 18.9%;
-      margin-right: 18.4%;
-      width: calc(62.7% - 0px);
-    }
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector > * { 
-      width: 100%;
-    }
-    
-    .ScratchPadScreen > .layoutFlow > .elTopicSelector > .background > .containerMinHeight {
-      min-height: 500px;
-    }
-  
-  }  

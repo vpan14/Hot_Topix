@@ -55,11 +55,6 @@ class App extends React.Component {
     }
     return (
       <div>
-      // <p>{this.state.apiResponse}</p>
-
-      <div style={ {padding: '8px 16px'} }>
-        <TopicSelect/>
-      </div>
 
       <StreamApp
         apiKey="sjc92jugd7js"
@@ -67,14 +62,13 @@ class App extends React.Component {
         token={this.state.apiResponse}
       >
 
-        <NotificationDropdown
-          //userId="vpan"
-          notify
-        />
         <StatusUpdateForm
           feedGroup="Timeline"
           //userId="vpan"
         />
+        
+        <TopicSelect/>
+
         <FlatFeed
           feedGroup = "Timeline"
           options={ {reactions: { recent: true } } }
