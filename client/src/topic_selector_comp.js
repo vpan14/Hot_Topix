@@ -1,4 +1,6 @@
 import React from 'react';
+import { StreamApp, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed'; 
+import 'react-activity-feed/dist/index.css';
 import './index.css';
 import './topic_selector_comp.css'
 
@@ -52,15 +54,13 @@ const ListItem = ({ value, onClick }) => (
       return (
         <div class="comp_div">
           <div class="inner_div">
-            <input type="text" value={inputValue} onChange={this.onChange} />
-            <button class="add_btn" onClick={this.onClick}>Add</button>
+            <input class="inner_div" type="text" value={inputValue} onChange={this.onChange} />
+            <Button buttonStyle="primary" onClick={this.onClick}>Add</Button>
           </div>
 
           <div class="list_div">
             <List items={topics} onItemClick={this.onItemClick} />
           </div>
-
-          <button>Done</button>
 
         </div>
       );

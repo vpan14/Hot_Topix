@@ -1,7 +1,7 @@
 import React from 'react';
-import { StreamApp, NotificationDropdown, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed';
-import TopicSelect from './topic_selector_comp.js';
+import { StreamApp, UserBar, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed';
 import 'react-activity-feed/dist/index.css';
+import TopicSelect from './topic_selector_comp.js';
 import'./topic_selector_comp.css';
 
 var urlString = window.location.href;
@@ -21,6 +21,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showSelector: false,
       apiResponse: "asdf",
       loaded: false
     };
@@ -39,6 +40,20 @@ class App extends React.Component {
     })
     .catch(err => {console.log(err);}
     );
+  }
+
+  triggerShowTopicSelector = () => {
+    this.setState({
+      ...this.state,
+      showSelector: true
+    })
+  }
+
+  triggerHideTopicSelector = () => {
+    this.setState({
+      ...this.state,
+      showSelector: false
+    })
   }
 
   componentWillMount() {
@@ -61,13 +76,30 @@ class App extends React.Component {
         appId="62811"
         token={this.state.apiResponse}
       >
+      
+        <UserBar
+          avatar="https://placehold.it/100x100"
+          username="Dan the Fireman"
+          subtitle="extinguising fires since 1999"
+          timestamp="2018-09-19T07:44:11+00:00"
+          onClickUser={() => console.log('clicked the user')}
+        />
+
+        <br></br>
 
         <StatusUpdateForm
-          feedGroup="Timeline"
-          //userId="vpan"
+          feedGroup = "Timeline"
+          FooterItem={
+            <div>
+              <div>
+                { this.state.showSelector && <Button buttonStyle="info" onClick={this.triggerHideTopicSelector}>Cancel</Button> }
+                { this.state.showSelector ? <Button buttonStyle="primary" onClick={this.triggerHideTopicSelector}>Done</Button> : <Button
+                  buttonStyle="primary" onClick={this.triggerShowTopicSelector}>Add Topics</Button> }
+              </div>
+              { this.state.showSelector && <TopicSelect/> }
+            </div>
+          }
         />
-        
-        <TopicSelect/>
 
         <FlatFeed
           feedGroup = "Timeline"
