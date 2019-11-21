@@ -4,6 +4,8 @@ import 'react-activity-feed/dist/index.css';
 import TopicSelect from './topic_selector_comp.js';
 import'./topic_selector_comp.css';
 
+var router = require('./index.js');
+
 var urlString = window.location.href;
 var splitString = urlString.split('/');
 urlString = splitString[0] + "/" + splitString[1] + "/" + splitString[2] + "/getToken";
@@ -61,6 +63,14 @@ class App extends React.Component {
       console.log("calling getToken");
   }
 
+  signout() {
+    router.
+    router.get('/logout', function(req, res) {
+      req.logout();
+      res.redirect('/');
+    });
+  }
+
   render () {
     //console.log(process.env['REACT_APP_API']);
     //console.log(process.env['REACT_APP_ID']);
@@ -78,7 +88,10 @@ class App extends React.Component {
       >
       
         <UserBar
-          avatar="https://placehold.it/100x100"
+          avatar="test_profile_pic.png"
+
+          AfterUsername={<div><form action="/logout"><Button type="submit" buttonStyle="info">Sign Out</Button></form></div>}
+
           username="Dan the Fireman"
           subtitle="extinguising fires since 1999"
           timestamp="2018-09-19T07:44:11+00:00"
