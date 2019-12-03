@@ -1,5 +1,6 @@
 import React from 'react';
-import { StreamApp, UserBar, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed';
+import { StreamApp, UserBar, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm,
+RepostButton } from 'react-activity-feed';
 import 'react-activity-feed/dist/index.css';
 import TopicSelect from './topic_selector_comp.js';
 import'./topic_selector_comp.css';
@@ -86,7 +87,7 @@ class App extends React.Component {
         appId="62811"
         token={this.state.apiResponse}
       >
-      
+
         <UserBar
           avatar="test_profile_pic.png"
 
@@ -119,19 +120,22 @@ class App extends React.Component {
           options={ {reactions: { recent: true } } }
           notify
           Activity={(props) =>
-              <Activity {...props}
+            <Activity {...props}
               Footer={() => (
-                  <div style={ {padding: '8px 16px'} }>
-                    <LikeButton {...props} />
-                    <CommentField
-                      activity={props.activity}
-                      onAddReaction={props.onAddReaction} />
-                    <CommentList activityId={props.activity.id} />
-                  </div>
-                )}
-              />
-            }
-          />
+                <div style={ {padding: '8px 16px'} }>
+                  <LikeButton {...props} />
+                  <RepostButton {...props}/>
+                  <CommentField
+                    activity={props.activity}
+                    onAddReaction={props.onAddReaction} />
+                  <CommentList activityId={props.activity.id} />
+                </div>
+              )}
+            />
+          }
+        />
+
+
       </StreamApp>
       </div>
     );
