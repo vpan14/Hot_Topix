@@ -15,6 +15,8 @@ var stream = require('getstream');
 
 client = stream.connect('sjc92jugd7js', 'rhtnurcusnqwkw4gpe2tx84wdd9wg6k92zn6q2wh9fs77t7bb8zzu8wbdvnfxhzm', '62811');
 //client = stream.connect('sjc92jugd7js', null, '62811');
+
+//client.user('vpan').delete();
 var loggedInUser;
 var currentUser;
 var feed;
