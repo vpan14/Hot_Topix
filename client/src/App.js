@@ -6,6 +6,8 @@ import'./topic_selector_comp.css';
 
 var router = require('./index.js');
 
+//const User = require('../models/User.js');
+
 var urlString = window.location.href;
 var splitString = urlString.split('/');
 urlString = splitString[0] + "/" + splitString[1] + "/" + splitString[2] + "/getToken";
@@ -24,8 +26,9 @@ class App extends React.Component {
     super(props);
     this.state = {
       showSelector: false,
+      postTopics: [],
       showFinalTopicsList: false,
-      apiResponse: "asdf",
+      apiResponse: "",
       loaded: false
     };
   }
@@ -59,12 +62,26 @@ class App extends React.Component {
     })
   }
 
-  setFinalTopicList = () => {
-
+  triggerShowFinalTopicList = () => {
+    this.setState({
+      ...this.state,
+      //postTopics: TopicSelect.props.topics,
+      showFinalTopicsList: true,
+      showSelector: false
+    })
   }
 
-  triggerShowFinalTopicList = () => {
+  setFinalTopicList = (props) => {
+    this.setState({
+      ...this.state,
+      postTopics: props.topics
+    })
 
+    console.log("retrieved postTopics:");
+    console.log(this.postTopics);
+
+    this.triggerHideTopicSelector();
+    this.triggerShowFinalTopicList();
   }
 
   componentWillMount() {
@@ -104,10 +121,11 @@ class App extends React.Component {
             <div align="right" vertical-align="middle">
               <div>
                 { this.state.showSelector && <Button buttonStyle="info" onClick={this.triggerHideTopicSelector}>Cancel</Button> }
-                { this.state.showSelector ? <Button buttonStyle="primary" onClick={this.triggerHideTopicSelector}>Done</Button> : <Button
+                { this.state.showSelector ? <Button buttonStyle="primary" onClick={this.setFinalTopicList}>Done</Button> : <Button
                   buttonStyle="primary" onClick={this.triggerShowTopicSelector}>Add Topics</Button> }
               </div>
-              { this.state.showSelector && <TopicSelect/> }
+              { this.state.showSelector && <TopicSelect onClick={this.setFinalTopicList} /> }
+              {/* { this.state.showFinalTopicsList && <p>{this.props.postTopics}</p> } */}
             </div>
           }
         />

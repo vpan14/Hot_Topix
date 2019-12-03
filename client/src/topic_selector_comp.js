@@ -1,5 +1,5 @@
 import React from 'react';
-import { StreamApp, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed'; 
+import { Button } from 'react-activity-feed'; 
 import 'react-activity-feed/dist/index.css';
 import './index.css';
 import './topic_selector_comp.css'
@@ -15,10 +15,15 @@ const ListItem = ({ value, onClick }) => (
       }
     </ul>
   );
+
+  function returnTopics() {
+    return <p>{this.props.topics}</p>;
+  }
   
   class TopicSelect extends React.Component {
     constructor(props) {
       super(props);
+      this.props = props;
       this.state = {
         inputValue: '',
         topics: []
@@ -56,6 +61,7 @@ const ListItem = ({ value, onClick }) => (
           <div class="inner_div">
             <input class="inner_div" type="text" value={inputValue} onChange={this.onChange} />
             <Button buttonStyle="primary" onClick={this.onClick}>Add</Button>
+            <Button buttonStyle="primary" onClick={this.returnTopics}>Done</Button>
           </div>
 
           <div class="list_div">
