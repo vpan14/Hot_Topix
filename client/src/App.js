@@ -24,6 +24,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       showSelector: false,
+      showFinalTopicsList: false,
       apiResponse: "asdf",
       loaded: false
     };
@@ -58,6 +59,14 @@ class App extends React.Component {
     })
   }
 
+  setFinalTopicList = () => {
+
+  }
+
+  triggerShowFinalTopicList = () => {
+
+  }
+
   componentWillMount() {
       this.getToken();
       console.log("calling getToken");
@@ -84,26 +93,15 @@ class App extends React.Component {
       <StreamApp
         apiKey="sjc92jugd7js"
         appId="62811"
-        token={this.state.apiResponse}
+        token={ this.state.apiResponse }
       >
-      
-        <UserBar
-          avatar="test_profile_pic.png"
-
-          AfterUsername={<div><form action="/logout"><Button type="submit" buttonStyle="info">Sign Out</Button></form></div>}
-
-          username="Dan the Fireman"
-          subtitle="extinguising fires since 1999"
-          timestamp="2018-09-19T07:44:11+00:00"
-          onClickUser={() => console.log('clicked the user')}
-        />
 
         <br></br>
 
         <StatusUpdateForm
           feedGroup = "Timeline"
           FooterItem={
-            <div>
+            <div align="right" vertical-align="middle">
               <div>
                 { this.state.showSelector && <Button buttonStyle="info" onClick={this.triggerHideTopicSelector}>Cancel</Button> }
                 { this.state.showSelector ? <Button buttonStyle="primary" onClick={this.triggerHideTopicSelector}>Done</Button> : <Button
@@ -123,6 +121,7 @@ class App extends React.Component {
               Footer={() => (
                   <div style={ {padding: '8px 16px'} }>
                     <LikeButton {...props} />
+                    
                     <CommentField
                       activity={props.activity}
                       onAddReaction={props.onAddReaction} />
