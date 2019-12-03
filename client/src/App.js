@@ -1,6 +1,10 @@
 import React from 'react';
-import { StreamApp, NotificationDropdown, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed';
+import { StreamApp, UserBar, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed';
 import 'react-activity-feed/dist/index.css';
+import TopicSelect from './topic_selector_comp.js';
+import'./topic_selector_comp.css';
+
+var router = require('./index.js');
 
 var urlString = window.location.href;
 var splitString = urlString.split('/');
@@ -19,6 +23,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      showSelector: false,
       apiResponse: "asdf",
       loaded: false
     };
@@ -39,9 +44,31 @@ class App extends React.Component {
     );
   }
 
+  triggerShowTopicSelector = () => {
+    this.setState({
+      ...this.state,
+      showSelector: true
+    })
+  }
+
+  triggerHideTopicSelector = () => {
+    this.setState({
+      ...this.state,
+      showSelector: false
+    })
+  }
+
   componentWillMount() {
       this.getToken();
       console.log("calling getToken");
+  }
+
+  signout() {
+    router.
+    router.get('/logout', function(req, res) {
+      req.logout();
+      res.redirect('/');
+    });
   }
 
   render () {
@@ -52,28 +79,48 @@ class App extends React.Component {
       return null;
     }
     return (
-      // <div>
-      // <p>{this.state.apiResponse}</p>
+      <div>
+
       <StreamApp
         apiKey="sjc92jugd7js"
         appId="62811"
         token={this.state.apiResponse}
       >
-        <NotificationDropdown
-          //userId="vpan"
-          notify
+      
+        <UserBar
+          avatar="test_profile_pic.png"
+
+          AfterUsername={<div><form action="/logout"><Button type="submit" buttonStyle="info">Sign Out</Button></form></div>}
+
+          username="Dan the Fireman"
+          subtitle="extinguising fires since 1999"
+          timestamp="2018-09-19T07:44:11+00:00"
+          onClickUser={() => console.log('clicked the user')}
         />
+
+        <br></br>
+
         <StatusUpdateForm
-          feedGroup="Timeline"
-          //userId="vpan"
+          feedGroup = "Timeline"
+          FooterItem={
+            <div>
+              <div>
+                { this.state.showSelector && <Button buttonStyle="info" onClick={this.triggerHideTopicSelector}>Cancel</Button> }
+                { this.state.showSelector ? <Button buttonStyle="primary" onClick={this.triggerHideTopicSelector}>Done</Button> : <Button
+                  buttonStyle="primary" onClick={this.triggerShowTopicSelector}>Add Topics</Button> }
+              </div>
+              { this.state.showSelector && <TopicSelect/> }
+            </div>
+          }
         />
+
         <FlatFeed
           feedGroup = "Timeline"
           options={ {reactions: { recent: true } } }
           notify
           Activity={(props) =>
               <Activity {...props}
-                Footer={() => (
+              Footer={() => (
                   <div style={ {padding: '8px 16px'} }>
                     <LikeButton {...props} />
                     <CommentField
@@ -86,7 +133,7 @@ class App extends React.Component {
             }
           />
       </StreamApp>
-      // </div>
+      </div>
     );
   }
 }
