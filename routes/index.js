@@ -325,6 +325,7 @@ router.post('/edit_profile', (req, res) => {
   console.log(req.body.email);
   console.log(req.body.bio);
   console.log(req.body.fullname);
+  console.log(req.body.avatar_file);
 
   const email = req.body.email;
   const username = req.body.username;
