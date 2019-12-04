@@ -10,7 +10,7 @@ var router = require('./index.js');
 
 var divStyle = {
   display: 'inline-flex',
-  paddingLeft: '65%',
+  paddingLeft: '84%',
 };
 
 //load user model
