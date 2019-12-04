@@ -8,11 +8,6 @@ import './index.css';
 
 var router = require('./index.js');
 
-var divStyle = {
-  display: 'inline-flex',
-  paddingLeft: '65%',
-};
-
 //load user model
 //const TopicList = require('../models/TopicList.js');
 
@@ -185,7 +180,7 @@ class App extends React.Component {
         <StatusUpdateForm
           feedGroup = "Timeline"
           FooterItem={
-            <div style={divStyle}>
+            <div align="right">
 
               { !this.state.showSelector && <Button buttonStyle="primary" onClick={this.triggerShowTopicSelector}>Add Topics</Button> }
 
