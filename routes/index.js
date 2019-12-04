@@ -112,6 +112,35 @@ router.get('/profile', ensureAuthenticated, (req,res) => {
 });
 
 //follow user page
+router.get('/follow_topic', ensureAuthenticated, (req,res) => {
+  var topics;
+  var yourTopics;
+  User.findOne({ username: "topicHolder" }).then(user => {
+    if (user) {
+      topics = user.topicList;
+      User.findOne({ username: loggedInUser.username }).then(user => {
+        if (user) {
+          yourTopics = user.topicList;
+
+          res.render('follow_topic', {
+            topics: topics,
+            yourTopics: yourTopics,
+            loggedInUser: loggedInUser
+          });
+        } else {
+          res.redirect('/home');
+        }
+      });
+    } else {
+      res.redirect('/home');
+    }
+  });
+
+
+
+});
+
+//follow user page
 router.get('/follow_user', ensureAuthenticated, (req,res) => {
   var usersList;
   User.find({}, 'username', function(err, users){
@@ -265,8 +294,9 @@ router.post('/signup', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const fullname = req.body.lastname;
-  const backgroundColor1 = "#ffffff"
-  const backgroundColor2 = "#ffffff"
+  const backgroundColor1 = "#ffffff";
+  const backgroundColor2 = "#ffffff";
+  const topicList = [];
 
   let errors = [];
 
@@ -302,7 +332,8 @@ router.post('/signup', (req, res) => {
           password,
           fullname,
           backgroundColor1,
-          backgroundColor2
+          backgroundColor2,
+          topicList
         });
 
         client.user(username).create({
