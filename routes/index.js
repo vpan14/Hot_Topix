@@ -326,6 +326,20 @@ router.post('/signup', (req, res) => {
   }
 });
 
+router.post('/edit_profile/delete', (req, res) => {
+
+  console.log("Deleting a user :(");
+  console.log(req.user.username);
+  client.user(req.user.username).delete();
+  User.deleteOne({ username: req.user.username}, (err, collection) => {
+    if(err) throw err;
+    console.log("User deleted from mongodb");
+  });
+
+  res.redirect('/');
+
+});
+
 router.post('/edit_profile', (req, res) => {
 
   console.log(req.pass);
