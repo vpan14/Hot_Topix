@@ -360,26 +360,32 @@ router.post('/edit_profile', (req, res) => {
 
   let errors = [];
 
+  var color1;
   //var oldUser;
   if(colorSelect.localeCompare("light")==0) {
     console.log("light mode")
     //white: #ffffff
+    color1 = "#ffffff";
   }
   else if(colorSelect.localeCompare("dark")==0) {
-  console.log("dark mode")
-  //dark: #2e2c2c
+    console.log("dark mode")
+    //dark: #2e2c2c
+    color1 = "#2e2c2c";
   }
   else if (colorSelect.localeCompare("red")==0) {
-  console.log("red mode")
-  //red: #f07b73
+    console.log("red mode")
+    //red: #f07b73
+    color1 = "#f07b73";
   }
   else if (colorSelect.localeCompare("green")==0) {
-  console.log("green mode")
-  //green: #7fdb98
+    console.log("green mode")
+    //green: #7fdb98
+    color1 = "#7fdb98";
   }
   else if (colorSelect.localeCompare("blue")==0) {
-  console.log("blue mode")
-  //blue: #50abcc
+    console.log("blue mode")
+    //blue: #50abcc
+    color1 = "#50abcc";
   }
 
   if(!email) {
@@ -415,7 +421,8 @@ router.post('/edit_profile', (req, res) => {
           username,
           password,
           fullname,
-          bio
+          bio,
+          backgroundColor1: color1
         });
         //console.log("new user:")
         //console.log(newUser);
