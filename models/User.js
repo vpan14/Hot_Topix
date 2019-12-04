@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema ({
   bio: String,
   backgroundColor1: String,
   backgroundColor2: String,
+  isDeleted: String,
   topicList: Array
 });
 
