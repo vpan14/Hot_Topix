@@ -365,7 +365,7 @@ router.post('/login', (req, res, next) => {
     else{
       console.log(user);
       loggedInUser = user;
-  
+
       userToken = client.createUserToken(user.username);
       //console.log(userToken);
       feed = client.feed('Timeline', user.username);
@@ -394,7 +394,7 @@ router.post('/signup', (req, res) => {
   const fullname = req.body.lastname;
   const bio = "";
   const backgroundColor1 = "#ffffff";
-  const backgroundColor2 = "#ffffff";
+  const backgroundColor2 = "#000000";
   const topicList = [];
 
   let errors = [];
@@ -499,18 +499,18 @@ router.post('/edit_profile/delete', (req, res) => {
   /*
   getFollowers().then(function(result) {
     console.log("Followers:");
-    for(var i = 0; i < result.results.length; i++) 
+    for(var i = 0; i < result.results.length; i++)
     {
       console.log(result.results[i].target_id);
       feed.unfollow()
     }
-    
+
   });
   */
  /*
   getFollowing().then(function(result) {
     console.log("Following:");
-    for(var i = 0; i < result.results.length; i++) 
+    for(var i = 0; i < result.results.length; i++)
     {
       console.log(result.results[i].target_id);
       feed.unfollow(result.results[i].target_id);
@@ -543,31 +543,37 @@ router.post('/edit_profile', (req, res) => {
   let errors = [];
 
   var color1;
+  var color2;
   //var oldUser;
   if(colorSelect.localeCompare("light")==0) {
     console.log("light mode")
     //white: #ffffff
     color1 = "#ffffff";
+    color2 = "#000000";
   }
   else if(colorSelect.localeCompare("dark")==0) {
     console.log("dark mode")
     //dark: #2e2c2c
     color1 = "#2e2c2c";
+    color2 = "#ffffff";
   }
   else if (colorSelect.localeCompare("red")==0) {
     console.log("red mode")
     //red: #f07b73
     color1 = "#f07b73";
+    color2 = "#000000";
   }
   else if (colorSelect.localeCompare("green")==0) {
     console.log("green mode")
     //green: #7fdb98
     color1 = "#7fdb98";
+    color2 = "#000000";
   }
   else if (colorSelect.localeCompare("blue")==0) {
     console.log("blue mode")
     //blue: #50abcc
     color1 = "#50abcc";
+    color2 = "#000000";
   }
 
   if(!email) {
@@ -604,7 +610,8 @@ router.post('/edit_profile', (req, res) => {
           password,
           fullname,
           bio,
-          backgroundColor1: color1
+          backgroundColor1: color1,
+          backgroundColor2: color2
         });
         //console.log("new user:")
         //console.log(newUser);
