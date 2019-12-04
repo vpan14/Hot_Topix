@@ -7,6 +7,9 @@ import './index.css';
 
 var router = require('./index.js');
 
+//load user model
+//const TopicList = require('../models/TopicList.js');
+
 //const User = require('../models/User.js');
 
 var urlString = window.location.href;
@@ -85,9 +88,6 @@ class App extends React.Component {
   }
 
   triggerHideTopicSelector = () => {
-    
-    console.log("hiding topic selector");
-
     this.setState({
       ...this.state,
       showSelector: false
@@ -157,6 +157,8 @@ class App extends React.Component {
 
       <br></br>
 
+      
+
       <StreamApp
         apiKey="sjc92jugd7js"
         appId="62811"
@@ -219,6 +221,7 @@ class App extends React.Component {
             }
           />
       </StreamApp>
+
       </div>
     );
   }

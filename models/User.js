@@ -7,8 +7,6 @@ const UserSchema = new mongoose.Schema ({
   fullname: String,
   //firstname: String,
   bio: String,
-
-  followed_topics: []
 });
 
 module.exports = mongoose.model('Users', UserSchema);
