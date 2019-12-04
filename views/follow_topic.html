@@ -64,29 +64,43 @@
   </nav>
   <div class="jumbotron" style="padding-left: 50px;">
   <p>
-    Follow another user:
+    Follow a Topic:
   </p>
 
-    <form action="/follow_user" method="post" class="form-inline" style="padding-left: 25px;">
+    <form action="/follow_topic" method="post" class="form-inline" style="padding-left: 25px;">
         <div class="form-group">
           <!-- <input type="text" name="username" placeholder="Your Username" class="form-control"> -->
-          <input aria-label= "Follow User" type="text" name="follow_username" placeholder="Follow Username" class="form-control">
+          <input aria-label= "Follow User" type="text" name="follow_username" placeholder="Follow Topic" class="form-control">
         </div>
         <button aria-label= "Follow Button" class="btn btn-primary form-btn" value="Submit" type="submit">Follow</button>
       </form>
 
       <br>
+
     <p>
-      Unfollow another user:
+      Unfollow a Topic:
     </p>
-      <form action="/unfollow_user" method="post" class="form-inline" style="padding-left: 25px;">
+      <form action="/unfollow_topic" method="post" class="form-inline" style="padding-left: 25px;">
           <div class="form-group">
             <!-- <input type="text" name="username" placeholder="Your Username" class="form-control"> -->
-            <input aria-label= "Unfollow User" type="text" name="unfollow_username" placeholder="Unfollow Username" class="form-control">
+            <input aria-label= "Unfollow User" type="text" name="unfollow_username" placeholder="Unfollow Topic" class="form-control">
           </div>
           <button aria-label= "Unfollow Button" class="btn btn-primary form-btn" value="Submit" type="submit">Unfollow</button>
         </form>
 
+<br>
+    <p>
+      Add a Topic:
+    </p>
+      <form action="/add_topic" method="post" class="form-inline" style="padding-left: 25px;">
+          <div class="form-group">
+            <!-- <input type="text" name="username" placeholder="Your Username" class="form-control"> -->
+            <input aria-label= "Unfollow User" type="text" name="add_topic" placeholder="Add Topic" class="form-control">
+          </div>
+          <button aria-label= "Unfollow Button" class="btn btn-primary form-btn" value="Submit" type="submit">Add</button>
+        </form>
+
+        <br>
         <p>
           Current User:
           <b>
@@ -95,13 +109,13 @@
         </p>
 
         <p>
-          Current Users Following You:
+          List of Topics You Follow:
         </p>
 
         <table>
-        <% for(var i=0; i < followers.results.length; i++) { %>
+        <% for(var i=0; i < yourTopics.length; i++) { %>
            <tr>
-             <td><%= followers.results[i].feed_id.substring(9) %></td>
+             <td><%= yourTopics[i] %></td>
            </tr>
         <% } %>
         </table>
@@ -109,29 +123,17 @@
 
         <br>
         <p>
-          Current Users You Follow:
+          List of Topics:
         </p>
 
         <table>
-        <% for(var i=0; i < following.results.length; i++) { %>
+        <% for(var i=0; i < topics.length; i++) { %>
            <tr>
-             <td><%= following.results[i].target_id.substring(9) %></td>
+             <td><%= topics[i] %></td>
            </tr>
         <% } %>
         </table>
 
-        <br>
-        <p>
-          Current HotTopiX Users:
-        </p>
-
-        <table>
-        <% for(var i=0; i < users.length; i++) { %>
-           <tr>
-             <td><%= users[i].username %></td>
-           </tr>
-        <% } %>
-        </table>
 
 </div>
 

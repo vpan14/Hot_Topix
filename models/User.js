@@ -10,6 +10,7 @@ const UserSchema = new mongoose.Schema ({
   backgroundColor1: String,
   backgroundColor2: String,
   isDeleted: String
+  topicList: Array
 });
 
 module.exports = mongoose.model('Users', UserSchema);
