@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-activity-feed'; 
+import { Button } from 'react-activity-feed';
 import 'react-activity-feed/dist/index.css';
 import './index.css';
 import './topic_selector_comp.css'
@@ -15,20 +15,28 @@ const ListItem = ({ value, onClick }) => (
       }
     </ul>
   );
-
-  function returnTopics() {
-    return <p>{this.props.topics}</p>;
-  }
   
   class TopicSelect extends React.Component {
     constructor(props) {
       super(props);
-      this.props = props;
+      //this.props = props;
       this.state = {
         inputValue: '',
         topics: []
       };
       this.removeTopic = this.removeTopic.bind(this);
+    }
+
+    componentDidMount() {
+      const { topics, returnTopicList } = this.props;
+
+      console.log("mounted");
+
+      returnTopicList(topics)
+    };
+
+    returnTopics() {
+      return ( <p>{this.props.topics}</p> );
     }
   
     onClick = () => {
@@ -56,6 +64,8 @@ const ListItem = ({ value, onClick }) => (
 
     render() {
       const { topics, inputValue } = this.state;
+      //const { topics } = this.props;
+
       return (
         <div class="comp_div">
           <div class="inner_div">
