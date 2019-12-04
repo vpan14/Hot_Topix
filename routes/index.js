@@ -21,17 +21,18 @@ var loggedInUser;
 var currentUser;
 var feed;
 var currentFollowing;
+var globalTopics;
 
 
 async function getFollowers(){
   followers = await feed.followers();
-  console.log(followers)
+  //console.log(followers)
   return followers;
 }
 
 async function getFollowing(){
   followers = await feed.following();
-  console.log(followers)
+  //console.log(followers)
   return followers;
 }
 
@@ -112,9 +113,128 @@ router.get('/profile', ensureAuthenticated, (req,res) => {
 });
 
 //follow user page
+router.get('/follow_topic', ensureAuthenticated, (req,res) => {
+  var topics;
+  var yourTopics;
+  User.findOne({ username: "topicHolder" }).then(user => {
+    if (user) {
+      topics = user.topicList;
+      globalTopics = topics;
+      User.findOne({ username: loggedInUser.username }).then(user => {
+        if (user) {
+          yourTopics = user.topicList;
+
+          res.render('follow_topic', {
+            topics: topics,
+            yourTopics: yourTopics,
+            loggedInUser: loggedInUser
+          });
+        } else {
+          res.redirect('/home');
+        }
+      });
+    } else {
+      res.redirect('/home');
+    }
+  });
+});
+
+//follow user
+router.post('/follow_topic', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: loggedInUser.username }).then(user => {
+    if (user) {
+      topics = user.topicList;
+      if(!topics.includes(req.body.follow_username) && globalTopics.includes(req.body.follow_username)){
+        topics.push(req.body.follow_username);
+      }
+      console.log("topics:", topics);
+
+      User.updateOne(
+        {username : loggedInUser.username},
+        {$set: { topicList : topics}},
+        function(err, raw) {
+          if (err) {
+            res.send(err);
+          }
+          res.redirect('/follow_topic');
+        });
+
+      //res.redirect('/follow_topic');
+    } else {
+      res.redirect('/follow_topic');
+    }
+  });
+});
+
+//unfollow topic
+router.post('/unfollow_topic', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: loggedInUser.username }).then(user => {
+    if (user) {
+      topics = user.topicList;
+      var index = topics.indexOf(req.body.unfollow_username);
+      console.log(index);
+      if(index > -1){
+        topics.splice(index, 1);
+      }
+      console.log("topics:", topics);
+
+      User.updateOne(
+        {username : loggedInUser.username},
+        {$set: { topicList : topics}},
+        function(err, raw) {
+          if (err) {
+            res.send(err);
+          }
+          res.redirect('/follow_topic');
+        });
+
+      //res.redirect('/follow_topic');
+    } else {
+      res.redirect('/follow_topic');
+    }
+  });
+});
+
+//add topic
+router.post('/add_topic', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: "topicHolder" }).then(user => {
+    if (user) {
+      topics = user.topicList;
+      if(!topics.includes(req.body.add_topic)){
+        topics.push(req.body.add_topic);
+      }
+      console.log("topics:", topics);
+
+      User.updateOne(
+        {username : "topicHolder"},
+        {$set: { topicList : topics}},
+        function(err, raw) {
+          if (err) {
+            res.send(err);
+          }
+          res.redirect('/follow_topic');
+        });
+
+      //res.redirect('/follow_topic');
+    } else {
+      res.redirect('/follow_topic');
+    }
+  });
+});
+
+
+
+
+//follow user page
 router.get('/follow_user', ensureAuthenticated, (req,res) => {
   var usersList;
-  User.find({}, 'username', function(err, users){
+  User.find({"isDeleted": "0"}, function(err, users){
     if(err){
       console.log(err);
     } else {
@@ -236,16 +356,21 @@ router.post('/login', (req, res, next) => {
 
   //connect to user's timeline
   User.findOne({ email: req.body.email }).then(user => {
-
-    console.log(user);
-    loggedInUser = user;
-
-    userToken = client.createUserToken(user.username);
-    //console.log(userToken);
-    feed = client.feed('Timeline', user.username);
-    //currentUser = feed.token;
-    currentUser = userToken;
-    //console.log(currentUser)
+    if(user.isDeleted == "1")
+    {
+      res.redirect('/login');
+    }
+    else{
+      console.log(user);
+      loggedInUser = user;
+  
+      userToken = client.createUserToken(user.username);
+      //console.log(userToken);
+      feed = client.feed('Timeline', user.username);
+      //currentUser = feed.token;
+      currentUser = userToken;
+      //console.log(currentUser)
+    }
 
   });
 
@@ -265,8 +390,10 @@ router.post('/signup', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const fullname = req.body.lastname;
-  const backgroundColor1 = "#ffffff"
-  const backgroundColor2 = "#ffffff"
+  const bio = "";
+  const backgroundColor1 = "#ffffff";
+  const backgroundColor2 = "#ffffff";
+  const topicList = [];
 
   let errors = [];
 
@@ -301,8 +428,10 @@ router.post('/signup', (req, res) => {
           email,
           password,
           fullname,
+          bio,
           backgroundColor1,
-          backgroundColor2
+          backgroundColor2,
+          topicList
         });
 
         client.user(username).create({
@@ -332,10 +461,60 @@ router.post('/edit_profile/delete', (req, res) => {
   console.log("Deleting a user :(");
   console.log(req.user.username);
   client.user(req.user.username).delete();
-  User.deleteOne({ username: req.user.username}, (err, collection) => {
+  User.findOne({ username: req.user.username}, (err, oldUser) => {
     if(err) throw err;
-    console.log("User deleted from mongodb");
+    console.log("oldUser: ");
+    console.log(oldUser);
+    const email = oldUser.email;
+    const username = oldUser.username;
+    const password = oldUser.password;
+    const fullname = oldUser.fullname;
+    const bio = oldUser.bio;
+    const backgroundColor1 = oldUser.backgroundColor1;
+    const backgroundColor2 = oldUser.backgroundColor2;
+    const isDeleted = "1";
+    var newUser = new User({
+      email,
+      username,
+      password,
+      fullname,
+      bio,
+      backgroundColor1,
+      backgroundColor2,
+      isDeleted
+    });
+
+    newUser._id = oldUser._id;
+
+    User.updateOne({ email: oldUser.email }, newUser, function(err, numEntries) {
+      if (err) throw err;
+      else {
+        console.log("Successfully updated deleted user. New user:");
+        console.log(newUser)
+      }
+    })
   });
+  /*
+  getFollowers().then(function(result) {
+    console.log("Followers:");
+    for(var i = 0; i < result.results.length; i++) 
+    {
+      console.log(result.results[i].target_id);
+      feed.unfollow()
+    }
+    
+  });
+  */
+ /*
+  getFollowing().then(function(result) {
+    console.log("Following:");
+    for(var i = 0; i < result.results.length; i++) 
+    {
+      console.log(result.results[i].target_id);
+      feed.unfollow(result.results[i].target_id);
+    }
+  });
+  */
 
   res.redirect('/');
 
