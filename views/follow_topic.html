@@ -27,6 +27,14 @@
 
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script> -->
+  <style>
+  p {
+      color:<%= loggedInUser.backgroundColor2 %>;
+  }
+  td {
+      color:<%= loggedInUser.backgroundColor2 %>;
+  }
+  </style>
 </head>
 
 <body id="page-top">
@@ -44,7 +52,7 @@
             <a class="nav-link js-scroll-trigger" href="/home">Your Stream</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link js-scroll-trigger" href="/follow_user">Follow/Unfollow User</a>
+            <a class="nav-link js-scroll-trigger" href="/follow_user">Follow User</a>
           </li>
           <li class="nav-item">
             <a class="nav-link js-scroll-trigger" href="/follow_topic">Follow/Unfollow Topic</a>
