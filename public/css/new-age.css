@@ -114,7 +114,7 @@ section h2 {
 @media (min-width: 992px) {
   #mainNav {
     border-color: red;
-    background-color: blue;
+    background-color: black;
   }
   #mainNav .navbar-brand {
     color: fade(white, 70%);

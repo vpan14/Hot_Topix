@@ -7,6 +7,8 @@ const UserSchema = new mongoose.Schema ({
   fullname: String,
   //firstname: String,
   bio: String,
+  backgroundColor1: String,
+  backgroundColor2: String
 });
 
 module.exports = mongoose.model('Users', UserSchema);

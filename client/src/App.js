@@ -1,5 +1,6 @@
 import React from 'react';
-import { StreamApp, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm } from 'react-activity-feed';
+import { StreamApp, UserBar, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm,
+RepostButton } from 'react-activity-feed';
 import 'react-activity-feed/dist/index.css';
 //import TopicSelect from './topic_selector_comp.js';
 import'./topic_selector_comp.css';
@@ -165,7 +166,16 @@ class App extends React.Component {
         token={ this.state.apiResponse }
       >
 
-        <br></br>
+        <UserBar
+          avatar="test_profile_pic.png"
+
+          AfterUsername={<div><form action="/logout"><Button type="submit" buttonStyle="info">Sign Out</Button></form></div>}
+
+          username="Dan the Fireman"
+          subtitle="extinguising fires since 1999"
+          timestamp="2018-09-19T07:44:11+00:00"
+          onClickUser={() => console.log('clicked the user')}
+        />
 
         <StatusUpdateForm
           feedGroup = "Timeline"
@@ -206,20 +216,20 @@ class App extends React.Component {
           options={ {reactions: { recent: true } } }
           notify
           Activity={(props) =>
-              <Activity {...props}
+            <Activity {...props}
               Footer={() => (
-                  <div style={ {padding: '8px 16px'} }>
-                    <LikeButton {...props} />
-                    
-                    <CommentField
-                      activity={props.activity}
-                      onAddReaction={props.onAddReaction} />
-                    <CommentList activityId={props.activity.id} />
-                  </div>
-                )}
-              />
-            }
-          />
+                <div style={ {padding: '8px 16px'} }>
+                  <LikeButton {...props} />
+                  <RepostButton {...props}/>
+                  <CommentField
+                    activity={props.activity}
+                    onAddReaction={props.onAddReaction} />
+                  <CommentList activityId={props.activity.id} />
+                </div>
+              )}
+            />
+          }
+        />
       </StreamApp>
 
       </div>
