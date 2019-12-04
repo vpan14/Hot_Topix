@@ -306,7 +306,8 @@ router.post('/signup', (req, res) => {
         });
 
         client.user(username).create({
-            name: fullname
+            name: fullname,
+            profileImage: 'https://www.cs.purdue.edu/people/images/faculty/turkstra.jpg',
         });
 
         bcrypt.genSalt(10, (err, salt) => {
