@@ -21,6 +21,7 @@ var loggedInUser;
 var currentUser;
 var feed;
 var currentFollowing;
+var globalTopics;
 
 
 async function getFollowers(){
@@ -118,6 +119,7 @@ router.get('/follow_topic', ensureAuthenticated, (req,res) => {
   User.findOne({ username: "topicHolder" }).then(user => {
     if (user) {
       topics = user.topicList;
+      globalTopics = topics;
       User.findOne({ username: loggedInUser.username }).then(user => {
         if (user) {
           yourTopics = user.topicList;
@@ -144,7 +146,7 @@ router.post('/follow_topic', (req, res) => {
   User.findOne({ username: loggedInUser.username }).then(user => {
     if (user) {
       topics = user.topicList;
-      if(!topics.includes(req.body.follow_username)){
+      if(!topics.includes(req.body.follow_username) && globalTopics.includes(req.body.follow_username)){
         topics.push(req.body.follow_username);
       }
       console.log("topics:", topics);
