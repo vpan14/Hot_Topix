@@ -8,10 +8,10 @@ import './index.css';
 
 var router = require('./index.js');
 
-const divStyle = {
+var divStyle = {
   display: 'inline-flex',
   paddingLeft: '65%',
-}
+};
 
 //load user model
 //const TopicList = require('../models/TopicList.js');
@@ -170,18 +170,6 @@ class App extends React.Component {
         appId="62811"
         token={ this.state.apiResponse }
       >
-        
-
-        <UserBar
-          avatar="test_profile_pic.png"
-
-          AfterUsername={<div><form action="/logout"><Button type="submit" buttonStyle="info">Sign Out</Button></form></div>}
-
-          username="Dan the Fireman"
-          subtitle="extinguising fires since 1999"
-          timestamp="2018-09-19T07:44:11+00:00"
-          onClickUser={() => console.log('clicked the user')}
-        />
 
         <StatusUpdateForm
           feedGroup = "Timeline"
