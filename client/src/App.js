@@ -170,6 +170,7 @@ class App extends React.Component {
         appId="62811"
         token={ this.state.apiResponse }
       >
+        
 
         <UserBar
           avatar="test_profile_pic.png"
