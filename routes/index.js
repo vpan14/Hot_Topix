@@ -294,6 +294,7 @@ router.post('/signup', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const fullname = req.body.lastname;
+  const bio = "";
   const backgroundColor1 = "#ffffff";
   const backgroundColor2 = "#ffffff";
   const topicList = [];
@@ -331,6 +332,7 @@ router.post('/signup', (req, res) => {
           email,
           password,
           fullname,
+          bio,
           backgroundColor1,
           backgroundColor2,
           topicList
