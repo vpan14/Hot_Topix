@@ -117,7 +117,7 @@ router.get('/follow_user', ensureAuthenticated, (req,res) => {
   User.find({}, 'username', function(err, users){
     if(err){
       console.log(err);
-    } else{
+    } else {
         usersList = users;
         console.log('retrieved list of names', users);
     }
