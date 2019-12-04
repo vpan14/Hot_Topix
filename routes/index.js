@@ -22,6 +22,7 @@ var currentUser;
 var feed;
 var currentFollowing;
 
+
 async function getFollowers(){
   followers = await feed.followers();
   console.log(followers)
@@ -264,6 +265,9 @@ router.post('/signup', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   const fullname = req.body.lastname;
+  const backgroundColor1 = "#ffffff"
+  const backgroundColor2 = "#ffffff"
+
   let errors = [];
 
   console.log(req.body);
@@ -296,7 +300,9 @@ router.post('/signup', (req, res) => {
           username,
           email,
           password,
-          fullname
+          fullname,
+          backgroundColor1,
+          backgroundColor2
         });
 
         client.user(username).create({
@@ -327,6 +333,7 @@ router.post('/edit_profile', (req, res) => {
   console.log(req.body.email);
   console.log(req.body.bio);
   console.log(req.body.fullname);
+  console.log(req.body.colorSelect);
 
   const email = req.body.email;
   const username = req.body.username;
@@ -335,10 +342,31 @@ router.post('/edit_profile', (req, res) => {
   //const lastname = req.body.lastname;
   const fullname = req.body.fullname;
   const bio = req.body.bio;
+  const colorSelect = req.body.colorSelect
 
   let errors = [];
 
   //var oldUser;
+  if(colorSelect.localeCompare("light")==0) {
+    console.log("light mode")
+    //white: #ffffff
+  }
+  else if(colorSelect.localeCompare("dark")==0) {
+  console.log("dark mode")
+  //dark: #2e2c2c
+  }
+  else if (colorSelect.localeCompare("red")==0) {
+  console.log("red mode")
+  //red: #f07b73
+  }
+  else if (colorSelect.localeCompare("green")==0) {
+  console.log("green mode")
+  //green: #7fdb98
+  }
+  else if (colorSelect.localeCompare("blue")==0) {
+  console.log("blue mode")
+  //blue: #50abcc
+  }
 
   if(!email) {
     errors.push({message: 'Enter your email.'});
