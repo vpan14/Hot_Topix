@@ -396,6 +396,7 @@ router.post('/signup', (req, res) => {
   const backgroundColor1 = "#ffffff";
   const backgroundColor2 = "#000000";
   const topicList = [];
+  const isDeleted = "0";
 
   let errors = [];
 
@@ -433,7 +434,8 @@ router.post('/signup', (req, res) => {
           bio,
           backgroundColor1,
           backgroundColor2,
-          topicList
+          topicList,
+          isDeleted
         });
 
         client.user(username).create({
@@ -507,18 +509,22 @@ router.post('/edit_profile/delete', (req, res) => {
 
   });
   */
- /*
-  getFollowing().then(function(result) {
-    console.log("Following:");
-    for(var i = 0; i < result.results.length; i++)
-    {
-      console.log(result.results[i].target_id);
-      feed.unfollow(result.results[i].target_id);
-    }
-  });
-  */
-
-  res.redirect('/');
+ 
+   getFollowing().then(function(result) {
+      console.log("Following:");
+      for(var i = 0; i < result.results.length; i++) 
+      {
+        console.log(result.results[i].target_id);
+        var str = result.results[i].target_id;
+        str = str.slice(9, str.length);
+        console.log("User:");
+        console.log(str);
+        feed.unfollow('Timeline', str);
+      }
+    });
+    
+    req.logout();
+    res.redirect('/');
 
 });
 
