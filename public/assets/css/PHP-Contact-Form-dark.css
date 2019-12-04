@@ -13,7 +13,7 @@
   font-family: 'Raleway';
   font-size: 16px;
   line-height: 23px;
-  color: #7d8285;
+  color: #000000;
   text-align: center;
 }
 
@@ -30,8 +30,8 @@ label.control-label {
 }
 
 button.btn.btn-success.btn-send {
-  background-color: #6e9a76;
-  border-color: #6e9a76;
+  background-color: #EA0B3A;
+  border-color: #EA0B3A;
   width: 100px;
   margin-bottom: 10px;
 }
@@ -53,3 +53,6 @@ form#contact-form {
   margin-bottom: 20px;
 }
 
+a {
+  color: #0000FF;
+}

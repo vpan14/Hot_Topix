@@ -62,6 +62,8 @@ hr {
   min-width: 100px;
   margin: 0 5px;
   max-width: 200px;
+  border-color: #0053B3;
+  background-color: #0053B3;
 }
 
 img.avart-img {
@@ -80,4 +82,3 @@ div.avatar-bg {
 
 div.avatar {
 }
-
