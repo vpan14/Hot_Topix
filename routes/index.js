@@ -53,7 +53,9 @@ router.get('/home', ensureAuthenticated, (req, res) => {
       console.log(result);
     });
 
-    res.render(path.join(__dirname, '../build', 'index.html'));
+    res.render(path.join(__dirname, '../build', 'index.html'), {
+      user: loggedInUser
+    });
 });
 
 //logout
