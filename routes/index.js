@@ -135,10 +135,99 @@ router.get('/follow_topic', ensureAuthenticated, (req,res) => {
       res.redirect('/home');
     }
   });
-
-
-
 });
+
+//follow user
+router.post('/follow_topic', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: loggedInUser.username }).then(user => {
+    if (user) {
+      topics = user.topicList;
+      if(!topics.includes(req.body.follow_username)){
+        topics.push(req.body.follow_username);
+      }
+      console.log("topics:", topics);
+
+      User.updateOne(
+        {username : loggedInUser.username},
+        {$set: { topicList : topics}},
+        function(err, raw) {
+          if (err) {
+            res.send(err);
+          }
+          res.redirect('/follow_topic');
+        });
+
+      //res.redirect('/follow_topic');
+    } else {
+      res.redirect('/follow_topic');
+    }
+  });
+});
+
+//unfollow topic
+router.post('/unfollow_topic', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: loggedInUser.username }).then(user => {
+    if (user) {
+      topics = user.topicList;
+      var index = topics.indexOf(req.body.unfollow_username);
+      console.log(index);
+      if(index > -1){
+        topics.splice(index, 1);
+      }
+      console.log("topics:", topics);
+
+      User.updateOne(
+        {username : loggedInUser.username},
+        {$set: { topicList : topics}},
+        function(err, raw) {
+          if (err) {
+            res.send(err);
+          }
+          res.redirect('/follow_topic');
+        });
+
+      //res.redirect('/follow_topic');
+    } else {
+      res.redirect('/follow_topic');
+    }
+  });
+});
+
+//add topic
+router.post('/add_topic', (req, res) => {
+  console.log(req.body);
+
+  User.findOne({ username: "topicHolder" }).then(user => {
+    if (user) {
+      topics = user.topicList;
+      if(!topics.includes(req.body.add_topic)){
+        topics.push(req.body.add_topic);
+      }
+      console.log("topics:", topics);
+
+      User.updateOne(
+        {username : "topicHolder"},
+        {$set: { topicList : topics}},
+        function(err, raw) {
+          if (err) {
+            res.send(err);
+          }
+          res.redirect('/follow_topic');
+        });
+
+      //res.redirect('/follow_topic');
+    } else {
+      res.redirect('/follow_topic');
+    }
+  });
+});
+
+
+
 
 //follow user page
 router.get('/follow_user', ensureAuthenticated, (req,res) => {
