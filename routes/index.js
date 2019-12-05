@@ -349,7 +349,7 @@ router.post('/unfollow_user', (req, res) => {
           break;
         }
       }
-      if(userfound == 1 && user.isDeleted == "0"){
+      if(userfound == 1){
         feed.unfollow('Timeline', req.body.unfollow_username);
         res.redirect('/follow_user_success');
       }
