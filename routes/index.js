@@ -269,12 +269,16 @@ router.get('/follow_user', ensureAuthenticated, (req,res) => {
 
 //follow user page ERROR
 router.get('/follow_user_error', ensureAuthenticated, (req,res) => {
-  res.render('follow_user_error');
+  res.render('follow_user_error', {
+    loggedInUser: loggedInUser
+  });
 });
 
 //follow user page SUCCESS
 router.get('/follow_user_success', ensureAuthenticated, (req,res) => {
-  res.render('follow_user_success');
+  res.render('follow_user_success', {
+    loggedInUser: loggedInUser
+  });
 });
 
 //follow user
@@ -509,7 +513,7 @@ router.post('/edit_profile/delete', (req, res) => {
 
   });
   */
- 
+
    getFollowing().then(function(result) {
       console.log("Following:");
       for(var i = 0; i < result.results.length; i++) 
