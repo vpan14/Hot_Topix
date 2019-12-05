@@ -53,9 +53,19 @@ router.get('/home', ensureAuthenticated, (req, res) => {
       console.log(result);
     });
 
-    res.render(path.join(__dirname, '../build', 'index.html'), {
-      user: loggedInUser
+    User.findOne({ username: "topicHolder" }).then(user => {
+      if (user) {
+        topics = user.topicList;
+
+        res.render(path.join(__dirname, '../build', 'index.html'), {
+          user: loggedInUser,
+          topics: topics
+        });
+      } else {
+        res.redirect('/home');
+      }
     });
+
 });
 
 //logout
