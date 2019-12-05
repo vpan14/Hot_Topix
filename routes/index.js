@@ -310,7 +310,7 @@ router.post('/follow_user', (req, res) => {
           break;
         }
       }
-      if(userfound == 0){
+      if(userfound == 0 && user.isDeleted == "0"){
         feed.follow('Timeline', req.body.follow_username);
         res.redirect('/follow_user_success');
       }
@@ -349,7 +349,7 @@ router.post('/unfollow_user', (req, res) => {
           break;
         }
       }
-      if(userfound == 1){
+      if(userfound == 1 && user.isDeleted == "0"){
         feed.unfollow('Timeline', req.body.unfollow_username);
         res.redirect('/follow_user_success');
       }
