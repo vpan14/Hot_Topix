@@ -1,16 +1,16 @@
-import React from 'react';
-import { StreamApp, UserBar, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm,
-RepostButton } from 'react-activity-feed';
-import 'react-activity-feed/dist/index.css';
+import React from "react";
+import {StreamApp, UserBar, Button, FlatFeed, LikeButton, Activity, CommentList, CommentField, StatusUpdateForm, RepostButton} from "react-activity-feed";
+import "react-activity-feed/dist/index.css";
 //import TopicSelect from './topic_selector_comp.js';
-import'./topic_selector_comp.css';
-import './index.css';
+import "./topic_selector_comp.css";
+import "./index.css";
 
-var router = require('./index.js');
+var router = require("./index.js");
 
 var divStyle = {
-  display: 'inline-flex',
-  paddingLeft: '84%',
+  display: "inline-flex",
+  width: "90%",
+  justifyContent: "flex-end"
 };
 
 //load user model
@@ -19,8 +19,9 @@ var divStyle = {
 //const User = require('../models/User.js');
 
 var urlString = window.location.href;
-var splitString = urlString.split('/');
-urlString = splitString[0] + "/" + splitString[1] + "/" + splitString[2] + "/getToken";
+var splitString = urlString.split("/");
+urlString =
+  splitString[0] + "/" + splitString[1] + "/" + splitString[2] + "/getToken";
 console.log(urlString);
 //urlString = "http://localhost:3001/getToken";
 // if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -31,27 +32,27 @@ console.log(urlString);
 //     urlString = "https://hottopix.herokuapp.com/getToken";
 // }
 
-const ListItem = ({ value, onClick }) => (
-  <li class="item" align="center" onClick={onClick}>{value}</li>
+const ListItem = ({value, onClick}) => (
+  <li class="item" align="center" onClick={onClick}>
+    {value}
+  </li>
 );
 
-const List = ({ items, onItemClick }) => (
+const List = ({items, onItemClick}) => (
   <ul align="center">
-    {
-      items.map((item, i) => <ListItem key={i} value={item} onClick={onItemClick(item)} />)
-    }
+    {items.map((item, i) => (
+      <ListItem key={i} value={item} onClick={onItemClick(item)} />
+    ))}
   </ul>
 );
 
-const FinalListItem = ({ value }) => (
-  <li class="final_item" >{value}</li>
-);
+const FinalListItem = ({value}) => <li class="final_item">{value}</li>;
 
-const FinalList = ({ items }) => (
-  <ul>
-    {
-      items.map((item, i) => <FinalListItem key={i} value={item} />)
-    }
+const FinalList = ({items}) => (
+  <ul class="final_list">
+    {items.map((item, i) => (
+      <FinalListItem key={i} value={item} />
+    ))}
   </ul>
 );
 
@@ -59,7 +60,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputValue: '',
+      inputValue: "",
       topics: [],
       showSelector: false,
       postTopics: [],
@@ -70,35 +71,36 @@ class App extends React.Component {
     this.removeTopic = this.removeTopic.bind(this);
   }
 
-  getToken () {
+  getToken() {
     console.log("called getToken");
     fetch(urlString)
-    .then(res => res.text())
-    .then(res => {
-      this.setState({
-        apiResponse: res,
-        loaded: true
+      .then(res => res.text())
+      .then(res => {
+        this.setState({
+          apiResponse: res,
+          loaded: true
+        });
+        //console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
       });
-      //console.log(res);
-    })
-    .catch(err => {console.log(err);}
-    );
   }
 
   triggerShowTopicSelector = () => {
     this.setState({
       ...this.state,
       showSelector: true,
-      showFinalTopicsList: false,
-    })
-  }
+      showFinalTopicsList: false
+    });
+  };
 
   triggerHideTopicSelector = () => {
     this.setState({
       ...this.state,
       showSelector: false
-    })
-  }
+    });
+  };
 
   setFinalTopicList = () => {
     if (this.state.topics.length > 0) {
@@ -106,25 +108,23 @@ class App extends React.Component {
         ...this.state,
         showFinalTopicsList: true,
         showSelector: false
-      })
+      });
     } else {
       this.setState({
         ...this.state,
         showSelector: false
-      })
+      });
     }
-
-  }
+  };
 
   componentWillMount() {
-      this.getToken();
+    this.getToken();
   }
 
   signout() {
-    router.
-    router.get('/logout', function(req, res) {
+    router.router.get("/logout", function (req, res) {
       req.logout();
-      res.redirect('/');
+      res.redirect("/");
     });
   }
 
@@ -133,99 +133,118 @@ class App extends React.Component {
     var index = topics.indexOf(t);
     if (index !== -1) {
       topics.splice(index, 1);
-      this.setState({ topics: topics, inputValue: '' });
+      this.setState({topics: topics, inputValue: ""});
     }
   }
 
   onClick = () => {
-    const { inputValue, topics } = this.state;
+    const {inputValue, topics} = this.state;
     if (inputValue) {
       const nextState = [...topics, inputValue];
-      this.setState({ topics: nextState, inputValue: '' });
+      this.setState({topics: nextState, inputValue: ""});
     }
-  }
+  };
 
   onItemClick = item => () => {
     this.removeTopic(item);
-  }
+  };
 
-  onChange = (e) => this.setState({ inputValue: e.target.value });
+  onChange = e => this.setState({inputValue: e.target.value});
 
-  render () {
+  render() {
     if (!this.state.loaded) {
       return null;
     }
 
-    const { topics, inputValue } = this.state;
+    const {topics, inputValue} = this.state;
 
     return (
       <div>
+        <br></br>
 
-      <br></br>
+        <StreamApp
+          apiKey="sjc92jugd7js"
+          appId="62811"
+          token={this.state.apiResponse}
+        >
+          <StatusUpdateForm
+            feedGroup="Timeline"
+            FooterItem={
+              <div style={divStyle} align="left">
+                {!this.state.showSelector && (
+                  <Button
+                    buttonStyle="primary"
+                    onClick={this.triggerShowTopicSelector}
+                  >
+                    Add Topics
+                  </Button>
+                )}
 
-      
+                {this.state.showSelector && (
+                  <div class="comp_div">
+                    <div class="inner_div">
+                      <input
+                        class="inner_div"
+                        type="text"
+                        value={inputValue}
+                        onChange={this.onChange}
+                      />
+                      <Button buttonStyle="primary" onClick={this.onClick}>
+                        Add
+                      </Button>
+                      <Button
+                        buttonStyle="info"
+                        onClick={this.triggerHideTopicSelector}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        buttonStyle="primary"
+                        onClick={this.setFinalTopicList}
+                      >
+                        Done
+                      </Button>
+                    </div>
 
-      <StreamApp
-        apiKey="sjc92jugd7js"
-        appId="62811"
-        token={ this.state.apiResponse }
-      >
-
-        <StatusUpdateForm
-          feedGroup = "Timeline"
-          FooterItem={
-            <div style={divStyle}>
-
-              { !this.state.showSelector && <Button buttonStyle="primary" onClick={this.triggerShowTopicSelector}>Add Topics</Button> }
-
-              { this.state.showSelector && 
-                <div class="comp_div">
-                  <div class="inner_div">
-                    <input class="inner_div" type="text" value={inputValue} onChange={this.onChange} />
-                    <Button buttonStyle="primary" onClick={this.onClick}>Add</Button>
-                    <Button buttonStyle="info" onClick={this.triggerHideTopicSelector}>Cancel</Button>
-                    <Button buttonStyle="primary" onClick={this.setFinalTopicList}>Done</Button>
+                    <div class="list_div">
+                      <List items={topics} onItemClick={this.onItemClick} />
+                    </div>
                   </div>
+                )}
 
-                  <div class="list_div">
-                    <List items={topics} onItemClick={this.onItemClick} />
+                {this.state.showFinalTopicsList && (
+                  <div class="final_comp_div" align="center">
+                    <div class="list_div" align="center">
+                      <FinalList items={topics} />
+                    </div>
                   </div>
-                </div>
-              }
+                )}
+              </div>
+            }
+          />
 
-              { this.state.showFinalTopicsList && 
-                <div class="final_comp_div" align="center">
-                  <div class="list_div" align="center">
-                    <FinalList items={topics} />
+          <FlatFeed
+            feedGroup="Timeline"
+            options={{reactions: {recent: true}}}
+            notify
+            Activity={props => (
+              <Activity
+                {...props}
+                Footer={() => (
+                  <div style={{padding: "8px 16px"}}>
+                    <LikeButton {...props} />
+                    <RepostButton {...props} />
+                    <CommentField
+                      activity={props.activity}
+                      onAddReaction={props.onAddReaction}
+                    />
+                    <CommentList activityId={props.activity.id} />
                   </div>
-                </div>
-              }
-
-            </div>
-          }
-        />
-
-        <FlatFeed
-          feedGroup = "Timeline"
-          options={ {reactions: { recent: true } } }
-          notify
-          Activity={(props) =>
-            <Activity {...props}
-              Footer={() => (
-                <div style={ {padding: '8px 16px'} }>
-                  <LikeButton {...props} />
-                  <RepostButton {...props}/>
-                  <CommentField
-                    activity={props.activity}
-                    onAddReaction={props.onAddReaction} />
-                  <CommentList activityId={props.activity.id} />
-                </div>
-              )}
-            />
-          }
-        />
-      </StreamApp>
-
+                )}
+              />
+            )}
+          />
+        </StreamApp>
       </div>
     );
   }
